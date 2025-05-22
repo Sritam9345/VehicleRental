@@ -30,7 +30,7 @@ const CaptainSignup = () => {
   const [errorPopupPanel,setErrorPopupPanel] = useState(false);
   const location = useRef(null);
 
-   const apiKey = "AIzaSyBb5PdTA1E_awEh3gEQuoaRSxcQKgVGkJk" //dev
+   const apiKey = import.meta.env.VITE_BASE_URL //dev
    
   const { captain, setCaptain } = React.useContext(CaptainDataContext)
 
