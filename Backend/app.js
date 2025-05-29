@@ -8,6 +8,7 @@ const rentalRoutes = require("./routes/rental.route")
 const cookieParser = require("cookie-parser");
 const map = require("./routes/map.route")
 const ride = require("./routes/ride.route")
+const serverless = require('serverless-http')
 
 
 dbConnect();
@@ -25,4 +26,4 @@ app.use("/ride",ride);
 
 
 
-module.exports = app;
+module.exports = serverless(app);
