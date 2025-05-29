@@ -28,4 +28,4 @@ app.use("/ride",ride);
 
 
 
-module.exports = serverless(app);
+module.exports = (app);
