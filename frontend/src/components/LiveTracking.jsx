@@ -30,13 +30,13 @@ const [location,setLocation] = useState(false);
         console.log(props.ride);}
 
     },[props.ride]);
-
+const apiKey = `${import.meta.env.VITE_GOOGLE_MAPS_API_KEY}`
 console.log(location);
 
     return (
         <>
             {location ? (
-                <LoadScript googleMapsApiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY}>
+                <LoadScript googleMapsApiKey={apiKey}>
                     <GoogleMap
                         mapContainerStyle={containerStyle}
                         center={currentPosition.current}
