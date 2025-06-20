@@ -56,3 +56,20 @@ let newHashedPassword = undefined;
     
 }
 
+
+module.exports.borrowed = async (user)=>{
+        
+    const updatedUser = await userModel.findByIdAndUpdate
+        (user._id,{
+            borrowed: user.borrowed+1
+        },{new:true});
+
+}
+
+module.exports.transaction = async(user,fare)=>{
+    const updatedUser = await userModel.findByIdAndUpdate
+        (user._id,{
+            expenses: user.expenses + fare
+        },{new:true});
+}
+

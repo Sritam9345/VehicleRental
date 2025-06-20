@@ -42,6 +42,14 @@ const userSchema = new Schema({
           required: true,
           default: [85.74478162143048, 20.294234951546645]
         }
+      },
+      borrowed:{
+        type:Number,
+        default: 0
+      },
+      expenses:{
+        type:Number,
+        default: 0
       }
 }); 
 

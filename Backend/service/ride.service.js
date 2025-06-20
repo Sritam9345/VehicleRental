@@ -1,7 +1,12 @@
 const rentalModel = require('../models/rental.model');
 const RideModel = require('../models/ride.model');
+const userModel = require('../models/user.model');
 const { getDistance } = require('./map.service');
 const crypto = require('crypto');
+const { borrowed } = require('./user.service');
+const userService = require('./user.service');
+const rentalService = require('./rental.service')
+
  
  
 const  getOtp = (num)=>{
@@ -67,7 +72,10 @@ module.exports.startRide = async ({ rideId, otp, rental }) => {
             }
     
             const ride = await RideModel.findById(rideId).select('+otp').populate('user').populate('rental');
-    
+           console.log(ride);
+            await userService.borrowed(ride.user);
+            await rentalService.rented(ride.rental);
+
             if (!ride) {
                 throw new Error("Ride not found");
             }
@@ -130,6 +138,11 @@ console.log(basePrice);
             multiplier = 0;
     }
     const fare = basePrice + durationInHours * multiplier;
+
+
+
+
+
     
     const rideData = await RideModel.findByIdAndUpdate(
         { _id: rideId },
@@ -142,12 +155,19 @@ console.log(basePrice);
     ).populate('user').populate('rental');
 
 
+    await userService.transaction(rideData.user,fare);
+    await rentalService.transaction(rideData.rental,fare);
+
+
+
         await rentalModel.findByIdAndUpdate({
             _id:rental._id
         },{
             status:"active"
         });
     
+
+
         return rideData;
     
     }

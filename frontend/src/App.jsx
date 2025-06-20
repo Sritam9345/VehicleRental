@@ -16,6 +16,7 @@ import CaptainRiding from './pages/CaptainRiding'
 import 'remixicon/fonts/remixicon.css'
 import Payment from './pages/Payment'
 import RentalPayment from './pages/RentalPayment'
+import ViewProfile from './pages/ViewUserProfile'
 
 const App = () => {
 
@@ -59,6 +60,10 @@ const App = () => {
        
        <Route path='/rental-payment' element={
       <RentalPayment/>
+      }/>
+
+      <Route path='/view-user-profile' element={
+<ViewProfile/>
       }/>
 
       </Routes>

@@ -8,7 +8,9 @@ const UserContext = ({ children }) => {
     const [ user, setUser ] = useState({
         email: '',
         firstName: '',
-        lastName: ''
+        lastName: '',
+        borrowed: 0,
+        expenses: 0
         
     })
 

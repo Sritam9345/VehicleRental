@@ -30,7 +30,7 @@ module.exports.createRide = async (req, res, next) => {
 
            ride.otp="";
 
-          // console.log(ride.user);
+           console.log(ride);
 
 const rideWithUser = await RideModel.findOne({_id:ride._id}).populate('user');
 
@@ -106,7 +106,9 @@ module.exports.confirmRide = async (req,res,next)=>{
 
     try{
         const ride = await rideService.confirmRide(rideId,req.rentalId);
-       
+        
+        console.log(ride);
+
         sendMessageToSocketld(ride.user.socketID,{
             event:'ride-confirmed',
             data:ride
@@ -141,7 +143,7 @@ module.exports.startRide = async(req,res,next)=>{
     try {
         
         const ride = await rideService.startRide({rideId,otp,rental })
-       
+        
         sendMessageToSocketld(ride.user.socketID,{
             event:"ride-started",
             data: ride

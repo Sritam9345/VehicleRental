@@ -1,3 +1,4 @@
+// CaptainHome.jsx
 import React, { useRef, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import CaptainDetails from '../components/CaptainDetails'
@@ -11,6 +12,8 @@ import { CaptainDataContext } from '../context/CapatainContext'
 import axios from 'axios'
 
 const CaptainHome = () => {
+  // ... existing state and logic ...
+
 
     const [ ridePopupPanel, setRidePopupPanel ] = useState(false )
     const [ confirmRidePopupPanel, setConfirmRidePopupPanel ] = useState(false)
@@ -81,11 +84,39 @@ const CaptainHome = () => {
 
         setRidePopupPanel(false)
         setConfirmRidePopupPanel(true)
-
     }
 
 
-    useGSAP(function () {
+    // useEffect(() => {
+    //     if (ridePopupPanel && ridePopupPanelRef.current) {
+    //         gsap.fromTo(ridePopupPanelRef.current,
+    //             { y: "100%", opacity: 0 },
+    //             { y: 0, opacity: 1, duration: 0.6, ease: "power3.out" }
+    //         )
+    //     } else if (!ridePopupPanel) {
+    //         gsap.to(ridePopupPanelRef.current,
+    //             { y: "100%", opacity: 0, duration: 0.6, ease: "power3.in" }
+    //         )
+    //     }
+    // }, [ ridePopupPanel ])
+  
+
+  // useEffect(() => {
+  //   if (confirmRidePopupPanel && confirmRidePopupPanelRef.current) {
+  //     gsap.fromTo(confirmRidePopupPanelRef.current,
+  //       { y: "100%", opacity: 0 },
+  //       { y: 0, opacity: 1, duration: 0.6, ease: "power3.out" }
+  //     )
+  //   }
+  //   else if (!confirmRidePopupPanel) {
+  //           gsap.to(confirmRidePopupPanelRef.current,
+  //               { y: "100%", opacity: 0, duration: 0.6, ease: "power3.in" }
+  //           )
+  //       console.log("rideUnconFirmed");
+  //         }
+  // }, [ confirmRidePopupPanel ])
+
+     useGSAP(function () {
         if (ridePopupPanel) {
             gsap.to(ridePopupPanelRef.current, {
                 transform: 'translateY(0)'
@@ -109,36 +140,76 @@ const CaptainHome = () => {
         }
     }, [ confirmRidePopupPanel ])
 
-    return (
-        <div className='h-screen'>
-            <div className='fixed p-6 top-0 flex items-center justify-between w-screen'>
-                <img className='w-16' src="/ChatGPT Image May 18, 2025, 10_07_19 PM.png" alt="" />
-                <Link to='/captain-home' className=' h-10 w-10 bg-white flex items-center justify-center rounded-full'>
-                    <i className="text-lg font-medium ri-logout-box-r-line"></i>
-                </Link>
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50">
+      {/* Header */}
+      <header className="bg-white/90 backdrop-blur-sm shadow-lg border-b border-gray-200">
+        <div className="container mx-auto px-6 py-4 flex items-center justify-between">
+          <div className="flex items-center space-x-3">
+            <div className="w-10 h-10 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg flex items-center justify-center">
+              <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
+              </svg>
             </div>
-            <div className='h-3/5'>
-                <img className='h-full w-full object-cover' src="https://miro.medium.com/v2/resize:fit:1400/0*gwMx05pqII5hbfmX.gif" alt="" />
-
-            </div>
-            <div className='h-2/5 p-6'>
-                <CaptainDetails />
-            </div>
-            <div ref={ridePopupPanelRef} className='fixed w-full z-10 bottom-0 translate-y-full bg-white px-3 py-10 pt-12'>
-                <RidePopUp
-                    ride={ride}
-                    setRidePopupPanel={setRidePopupPanel}
-                    setConfirmRidePopupPanel={setConfirmRidePopupPanel}
-                    confirmRide={confirmRide}
-                />
-            </div>
-            <div ref={confirmRidePopupPanelRef} className='fixed w-full h-screen z-10 bottom-0 translate-y-full bg-white px-3 py-10 pt-12'>
-                <ConfirmRidePopUp
-                    ride={ride}
-                    setConfirmRidePopupPanel={setConfirmRidePopupPanel} setRidePopupPanel={setRidePopupPanel} />
-            </div>
+            <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+              Captain Portal
+            </h1>
+          </div>
+          
+          <nav className="flex items-center space-x-6">
+            <button className="text-gray-600 hover:text-blue-600 transition-colors duration-300">
+              Dashboard
+            </button>
+            <button className="text-gray-600 hover:text-blue-600 transition-colors duration-300">
+              History
+            </button>
+          </nav>
         </div>
-    )
+      </header>
+
+      <main className="container mx-auto px-6 py-8">
+        <CaptainDetails />
+        
+        {/* Status Card */}
+        <div className="mt-8 bg-white rounded-xl shadow-lg p-6 transition-all duration-300 hover:shadow-xl">
+          <div className="flex items-center justify-between">
+            <h2 className="text-xl font-semibold text-gray-800">Current Status</h2>
+            <div className="flex items-center space-x-4">
+              <span className={`w-3 h-3 rounded-full ${payment ? 'bg-green-500' : 'bg-yellow-500'} animate-pulse`}></span>
+              <span className="text-sm text-gray-600">
+                {payment ? 'Payment Pending' : 'Available for Rides'}
+              </span>
+            </div>
+          </div>
+        </div>
+      </main>
+
+      {/* Ride Popup Panels */}
+      <div ref={ridePopupPanelRef} className="fixed inset-x-0 bottom-0 transform translate-y-full bg-white/95 backdrop-blur-lg rounded-t-3xl shadow-2xl border-t border-gray-200">
+        <RidePopUp 
+        ride={ride}
+        setRidePopupPanel={setRidePopupPanel} 
+        setConfirmRidePopupPanel={setConfirmRidePopupPanel}
+        confirmRide={confirmRide} />
+      </div>
+
+      <div ref={confirmRidePopupPanelRef} className="fixed inset-x-0 bottom-0 transform translate-y-full bg-white/95 backdrop-blur-lg rounded-t-3xl shadow-2xl border-t border-gray-200">
+        <ConfirmRidePopUp 
+        ride={ride} 
+        setRidePopupPanel={setRidePopupPanel}
+        setConfirmRidePopupPanel={setConfirmRidePopupPanel} />
+      </div>
+    </div>
+  )
 }
 
 export default CaptainHome
+
+
+
+
+
+
+
+
+

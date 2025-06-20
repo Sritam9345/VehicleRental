@@ -74,6 +74,11 @@ const rentalSchema = new Schema({
               required: true,
               default: [85.74478162143048, 20.294234951546645]
             }
+          },
+
+          rented:{
+            type:Number,
+            default:0
           }
 
     })

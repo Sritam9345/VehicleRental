@@ -67,3 +67,22 @@ module.exports.updateRental = async ({ rentalId, firstName, lastName, oldPasswor
         throw new Error('Error updating rental in the database: ' + error.message);
     }
 }
+
+
+module.exports.transaction = async(rental,fare)=>{
+    const updatedRental = await rentalModel.findByIdAndUpdate
+        (rental._id,{
+            earned: rental.earned + fare
+        },{new:true});
+}
+
+
+
+module.exports.rented = async (rental)=>{
+        
+    const updatedRental = await rentalModel.findByIdAndUpdate
+        (rental._id,{
+            rented: rental.rented+1
+        },{new:true});
+
+}

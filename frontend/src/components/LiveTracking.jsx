@@ -30,7 +30,8 @@ const [location,setLocation] = useState(false);
         console.log(props.ride);}
 
     },[props.ride]);
-const apiKey = `${import.meta.env.VITE_GOOGLE_MAPS_API_KEY}`
+const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
+console.log(apiKey);
 console.log(location);
 
     return (

@@ -1,16 +1,26 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { UserDataContext } from '../context/UserContext'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
+import UserError from '../components/UserError'
 
 const UserLogin = () => {
   const [ email, setEmail ] = useState('')
   const [ password, setPassword ] = useState('')
   const [ userData, setUserData ] = useState({})
+  const [errorPopupPanel,setErrorPopupPanel] = useState(false);
+  const errorPopupPanelRef = useState({});
+  const [error,setError] = useState(false);
 
   const { user, setUser } = useContext(UserDataContext)
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+
+useEffect(()=>{
+if(error==true)setErrorPopupPanel(true);
+else setErrorPopupPanel(false);
+},[error])
+
 
 
 
@@ -21,7 +31,7 @@ const UserLogin = () => {
       email: email,
       password: password
     }
-
+try{
     const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/user/login`, userData)
 
     if (response.status === 200) {
@@ -31,6 +41,10 @@ const UserLogin = () => {
       localStorage.setItem('token', data.token)
       navigate('/home')
     }
+  }catch(error){
+setError(true);
+  }
+    
 
 
     setEmail('')
@@ -40,6 +54,7 @@ const UserLogin = () => {
   return (
     <div className='p-7 h-screen flex flex-col justify-between'>
       <div>
+      
           <img className='w-20 mb-3' src="/ChatGPT Image May 18, 2025, 10_07_19 PM.png" alt="" />
 
         <form onSubmit={(e) => {
@@ -82,6 +97,13 @@ const UserLogin = () => {
           className='bg-[#10b461] flex items-center justify-center text-white font-semibold mb-5 rounded-lg px-4 py-2 w-full text-lg placeholder:text-base'
         >Sign in as Rental</Link>
       </div>
+{errorPopupPanel && (
+  <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+   
+      <UserError setErrorPopupPanel={setErrorPopupPanel} />
+   
+  </div>
+)}
     </div>
   )
 }

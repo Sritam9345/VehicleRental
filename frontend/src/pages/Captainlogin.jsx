@@ -1,17 +1,26 @@
 import React, { useState } from 'react'
+import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import { CaptainDataContext } from '../context/CapatainContext'
+import UserError from '../components/UserError'
 
 const Captainlogin = () => {
 
   const [ email, setEmail ] = useState('')
   const [ password, setPassword ] = useState('')
+  const [error,setError] = useState(false);
+  const [errorPopupPanel,setErrorPopupPanel] = useState(false);
 
   const { captain, setCaptain } = React.useContext(CaptainDataContext)
   const navigate = useNavigate()
 
+
+  useEffect(()=>{
+  if(error==true)setErrorPopupPanel(true);
+  else setErrorPopupPanel(false);
+  },[error])
 
 
   const submitHandler = async (e) => {
@@ -21,6 +30,7 @@ const Captainlogin = () => {
       password
     }
 
+    try{
     const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/rental/login`, Enteredcaptain)
 
     if (response.status === 200) {
@@ -31,6 +41,8 @@ const Captainlogin = () => {
       localStorage.setItem('token', data.token)
       navigate('/captain-home')
 
+    }}catch(error){
+      setError(true);
     }
 
     setEmail('')
@@ -81,6 +93,14 @@ const Captainlogin = () => {
           className='bg-[#d5622d] flex items-center justify-center text-white font-semibold mb-5 rounded-lg px-4 py-2 w-full text-lg placeholder:text-base'
         >Sign in as User</Link>
       </div>
+
+      {errorPopupPanel && (
+  <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+   
+      <UserError setErrorPopupPanel={setErrorPopupPanel} />
+   
+  </div>
+)}
     </div>
   )
 }
