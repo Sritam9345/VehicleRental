@@ -17,6 +17,8 @@ import 'remixicon/fonts/remixicon.css'
 import Payment from './pages/Payment'
 import RentalPayment from './pages/RentalPayment'
 import ViewProfile from './pages/ViewUserProfile'
+import CaptainProfile from './pages/CaptainProfile'
+import EditProfilePage from './pages/EditUserProfile'
 
 const App = () => {
 
@@ -66,6 +68,12 @@ const App = () => {
 <ViewProfile/>
       }/>
 
+    <Route path='/view-renter-profile' element={
+<CaptainProfile/>
+    }/>
+    <Route path='/edit-user-profile' element={
+      <EditProfilePage/>
+    }/>
       </Routes>
     </div>
   )

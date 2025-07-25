@@ -60,7 +60,13 @@ const Payment = () => {
      
       <div className="pt-6">
         <button
-          onClick={() => navigate('/captain-home')}
+          onClick={() => {
+            localStorage.removeItem('ride');
+            localStorage.removeItem('ridePopupPanel');
+            localStorage.removeItem('active');
+            localStorage.removeItem('payment');
+            localStorage.removeItem('confirmRidePopupPanel');    
+            navigate('/captain-home')}}
           className="w-full py-3 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-700 transition-colors duration-200"
         >
           Return Home

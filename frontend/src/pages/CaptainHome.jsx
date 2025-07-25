@@ -13,26 +13,44 @@ import axios from 'axios'
 import CaptainRiding from '../components/CaptainRiding'
 
 
+// Add custom persistent state hook:
+function useLocalStorageState(key, initialValue) {
+  const [state, setState] = React.useState(() => {
+    const stored = localStorage.getItem(key)
+    return stored ? JSON.parse(stored) : initialValue
+  })
+  return [state, setState]
+}
+
+
+
 const CaptainHome = () => {
-  // ... existing state and logic ...
+  // Replaced persistent useState with useLocalStorageState
+  const [ ridePopupPanel, setRidePopupPanel ] = useLocalStorageState('ridePopupPanel', false)
+  const [ confirmRidePopupPanel, setConfirmRidePopupPanel ] = useLocalStorageState('confirmRidePopupPanel', false)
 
+  const ridePopupPanelRef = useRef(null)
+  const confirmRidePopupPanelRef = useRef(null)
+  const [ ride, setRide ] = useLocalStorageState('ride', null)
 
-
-    const [ ridePopupPanel, setRidePopupPanel ] = useState(false )
-    const [ confirmRidePopupPanel, setConfirmRidePopupPanel ] = useState(false)
-
-    const ridePopupPanelRef = useRef(null)
-    const confirmRidePopupPanelRef = useRef(null)
-    const [ ride, setRide ] = useState(useLocation().state || null)
-
-    const { socket } = useContext(SocketContext)
-    const { captain } = useContext(CaptainDataContext)
-    const navigate = useNavigate();
-    const [payment,setPayment] = useState(false);
-    const [active , setActive] = useState(false);
+  const { socket } = useContext(SocketContext)
+  const { captain } = useContext(CaptainDataContext)
+  const navigate = useNavigate()
+  const [ payment, setPayment ] = useLocalStorageState('payment', false)
+  const [ active, setActive ] = useLocalStorageState('active', false)
 
 
 console.log(captain);
+
+
+useEffect(()=>{
+
+   localStorage.setItem('ride', JSON.stringify(ride));
+   localStorage.setItem('payment', JSON.stringify(payment));
+   localStorage.setItem('active', JSON.stringify(active));
+   localStorage.setItem('confirmRidePopupPanel', JSON.stringify(confirmRidePopupPanel));
+   localStorage.setItem('ridePopupPanel', JSON.stringify(ridePopupPanel));
+},[ride,payment,active,confirmRidePopupPanel,ridePopupPanel])
 
     useEffect(() => {
         socket.emit('join', {
@@ -179,9 +197,9 @@ console.log(ride);
           </div>
           
           <nav className="flex items-center space-x-6">
-            <button className="text-gray-600 hover:text-blue-600 transition-colors duration-300">
-              Edit Profile
-            </button>
+           <Link to='/view-renter-profile' ><button className="text-gray-600 hover:text-blue-600 transition-colors duration-300">
+              Profile
+            </button></Link> 
             <button className="text-gray-600 hover:text-blue-600 transition-colors duration-300">
               History
             </button>

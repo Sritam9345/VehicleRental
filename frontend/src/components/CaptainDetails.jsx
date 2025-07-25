@@ -7,6 +7,7 @@ const CaptainDetails = () => {
     const { captain } = useContext(CaptainDataContext)
 
     // CaptainDetails.jsx
+    console.log(captain)
 
   return (
     <div className="bg-white rounded-xl shadow-lg p-6 animate-fade-in">
