@@ -31,7 +31,7 @@ const Captainlogin = () => {
     }
 
     try{
-    const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/rental/login`, Enteredcaptain)
+    const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/rental/login`,Enteredcaptain)
 
     if (response.status === 200) {
       const data = response.data
@@ -97,7 +97,7 @@ const Captainlogin = () => {
       {errorPopupPanel && (
   <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
    
-      <UserError setErrorPopupPanel={setErrorPopupPanel} />
+      <UserError setError={setError} />
    
   </div>
 )}

@@ -1,49 +1,35 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect } from 'react'
 import { LoadScript, GoogleMap, Marker } from '@react-google-maps/api'
 
-const containerStyle = {
-    width: '100%',
-    height: '100%',
-};
 
-const center = {
-    lat: -3.745,
-    lng: -38.523
-};
 
 const LiveTracking = (props) => {
-   // const [ currentPosition, setCurrentPosition ] = useState(center);
-    const currentPosition = useRef({
-    lat: -3.745,
-    lng: -38.523
-});
-  
-const [location,setLocation] = useState(false);
+    const [currentPosition, setCurrentPosition] = useState({ lat: 20.5937, lng: 78.9629 });
+    const [location, setLocation] = useState(false);
    
-    useEffect(()=>{
-      if(props.ride){
-        currentPosition.current = {
-        lat:props.ride?.rental.location.coordinates[1] ,
-        lng: props.ride?.rental.location.coordinates[0]
-       }
-        setLocation(true);
-        console.log(props.ride);}
+  
 
-    },[props.ride]);
+useEffect(() => {
+    setCurrentPosition({
+        lat: props.ride?.rental?.location.coordinates[1],
+        lng: props.ride?.rental?.location.coordinates[0]
+    });
+}, []);
+
 const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 console.log(apiKey);
 console.log(location);
 
     return (
         <>
-            {location ? (
+            {props.ride ? (
                 <LoadScript googleMapsApiKey={apiKey}>
                     <GoogleMap
-                        mapContainerStyle={containerStyle}
-                        center={currentPosition.current}
+                        mapContainerStyle={{width: '100%', height: '100%'}}
+                        center={currentPosition}
                         zoom={15}
                     >
-                        <Marker position={currentPosition.current} />
+                        <Marker position={currentPosition} />
                     </GoogleMap>
                 </LoadScript>
             ) : (

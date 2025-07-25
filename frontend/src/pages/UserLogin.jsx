@@ -18,7 +18,9 @@ const UserLogin = () => {
 
 useEffect(()=>{
 if(error==true)setErrorPopupPanel(true);
-else setErrorPopupPanel(false);
+else {
+  setErrorPopupPanel(false);
+}
 },[error])
 
 
@@ -100,7 +102,7 @@ setError(true);
 {errorPopupPanel && (
   <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
    
-      <UserError setErrorPopupPanel={setErrorPopupPanel} />
+      <UserError setErrorPopupPanel={setErrorPopupPanel} setError={setError} />
    
   </div>
 )}

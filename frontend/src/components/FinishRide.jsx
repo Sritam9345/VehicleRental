@@ -5,10 +5,11 @@ import axios from 'axios'
 const FinishRide = ({ ride, setFinishRidePanel }) => {
   const navigate = useNavigate()
 
+  console.log(ride);
   async function endRide() {
     try {
       await axios.get(`${import.meta.env.VITE_BASE_URL}/ride/end-ride`, {
-        params: { rideId: ride._id },
+        params: { rideId: ride?._id },
         headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
       })
       setFinishRidePanel(false)
@@ -33,12 +34,12 @@ const FinishRide = ({ ride, setFinishRidePanel }) => {
         <div className="flex items-center space-x-4">
           <img
             className="w-12 h-12 rounded-full object-cover"
-            src={ride.user.avatarUrl || 'https://via.placeholder.com/40'}
-            alt={`${ride.user.firstName} avatar`}
+            src={ride?.user?.avatarUrl || 'https://via.placeholder.com/40'}
+            alt={`${ride?.user?.firstName} avatar`}
           />
           <div>
             <p className="text-sm text-gray-500 uppercase tracking-wide">Borrower</p>
-            <p className="text-lg font-medium text-gray-800">{ride.user.firstName} {ride.user.lastName}</p>
+            <p className="text-lg font-medium text-gray-800">{ride?.user?.firstName} {ride?.user?.lastName}</p>
           </div>
         </div>
         <div className="text-right">
@@ -55,7 +56,7 @@ const FinishRide = ({ ride, setFinishRidePanel }) => {
           <i className="ri-map-pin-2-fill text-red-500 text-xl mt-1"></i>
           <div>
             <p className="text-xs text-gray-500 uppercase tracking-wide">Destination</p>
-            <p className="text-sm text-gray-800">{ride.destination}</p>
+            <p className="text-sm text-gray-800">{ride?.destination}</p>
           </div>
         </div>
         <div className="flex items-start space-x-4">

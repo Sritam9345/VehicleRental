@@ -161,7 +161,8 @@ module.exports.endRide = async(req,res,next)=>{
     const error = validationResult(req);
    
     if(error.errors.length != 0){
-      throw new Error(error);
+      console.log(error.errors);
+        throw new Error(error);
     }
 
     const {rideId} = req.query;

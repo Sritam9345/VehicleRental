@@ -7,6 +7,7 @@ import { useRef } from 'react'
 import { useGSAP } from '@gsap/react';
 import Error from '../components/Error';
 import gsap from 'gsap';
+import { useEffect } from 'react'
 
 const CaptainSignup = () => {
   // Add at the top with the other useState declarations
@@ -21,7 +22,7 @@ const CaptainSignup = () => {
   const [ password, setPassword ] = useState('')
   const [ firstName, setFirstName ] = useState('')
   const [ lastName, setLastName ] = useState('')
-  const [error,setErorr] = useState("");
+  const [error,setError] = useState("");
   const [ vehicleColor, setVehicleColor ] = useState('')
   const [ vehiclePlate, setVehiclePlate ] = useState('')
   const [ vehicleCapacity, setVehicleCapacity ] = useState('')
@@ -30,8 +31,8 @@ const CaptainSignup = () => {
   const [errorPopupPanel,setErrorPopupPanel] = useState(false);
   const location = useRef(null);
 
-   const apiKey = import.meta.env.VITE_BASE_URL //dev
-   
+   const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY //dev
+
   const { captain, setCaptain } = React.useContext(CaptainDataContext)
 
 
@@ -40,7 +41,7 @@ const CaptainSignup = () => {
 try{
     const response1 = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${pickupLocation}&key=${apiKey}`);
     const results = response1.data.results;
-    console.log(apiKey)
+    
     console.log(response1)
     if (results.length > 0) {
       location.current = results[0].geometry.location;
@@ -76,7 +77,7 @@ try{
   
 }catch(error){
 
-  setErorr("Error locating the address..");
+  setError("Error locating the address..");
   setErrorPopupPanel(true);
 
 }
@@ -92,19 +93,14 @@ try{
 
   }
 
-useGSAP(function () {
-        if (errorPopupPanel) {
-            gsap.to(errorPopupPanelRef.current, {
-                transform: 'translateY(0)'
-            })
-        } else {
-            gsap.to(errorPopupPanelRef.current, {
-                transform: 'translateY(100%)'
-            })
-        }
-    }, [ errorPopupPanel ]);
+
+  useEffect(()=>{
+  if(error==true)setErrorPopupPanel(true);
+  else setErrorPopupPanel(false);
+  },[error])
 
 
+ 
   return (
     <div className='w-full max-w-6xl mx-auto py-5 px-5 h-screen flex flex-col justify-between'>
       <div>
@@ -252,6 +248,7 @@ useGSAP(function () {
               error={error}
               setErrorPopupPanel={setErrorPopupPanel}
               errorPopupPanel={errorPopupPanel}
+              setError={setError}
             />
           </div>
         </div>

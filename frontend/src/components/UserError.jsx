@@ -4,7 +4,7 @@ function UserError(props) {
 
 
   function handelClick(){
-    props.setErrorPopupPanel(false);
+    props.setError(false);
   }
 
   return (

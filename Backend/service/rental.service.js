@@ -2,6 +2,7 @@ const rentalModel = require("../models/rental.model");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const { blacklistTokenModel } = require("../models/blacklist.model");
+const rideModel = require("../models/ride.model");
 
 module.exports.createRental = async ({ firstName, lastName, email, password, color, capacity, type, plate,location }) => {
     if (!firstName || !password || !email || !color || !capacity || !type || !location) {
@@ -85,4 +86,11 @@ module.exports.rented = async (rental)=>{
             rented: rental.rented+1
         },{new:true});
 
+}
+
+module.exports.history = async (rental) =>{
+    
+    const totalRents = await rideModel.findById(rental._id);
+
+    console.log(totalRents);
 }

@@ -1,6 +1,6 @@
 // CaptainHome.jsx
 import React, { useRef, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate,useLocation } from 'react-router-dom'
 import CaptainDetails from '../components/CaptainDetails'
 import RidePopUp from '../components/RidePopUp'
 import { useGSAP } from '@gsap/react'
@@ -10,9 +10,12 @@ import { useEffect, useContext } from 'react'
 import { SocketContext } from '../context/SocketContext'
 import { CaptainDataContext } from '../context/CapatainContext'
 import axios from 'axios'
+import CaptainRiding from '../components/CaptainRiding'
+
 
 const CaptainHome = () => {
   // ... existing state and logic ...
+
 
 
     const [ ridePopupPanel, setRidePopupPanel ] = useState(false )
@@ -20,12 +23,16 @@ const CaptainHome = () => {
 
     const ridePopupPanelRef = useRef(null)
     const confirmRidePopupPanelRef = useRef(null)
-    const [ ride, setRide ] = useState(null)
+    const [ ride, setRide ] = useState(useLocation().state || null)
 
     const { socket } = useContext(SocketContext)
     const { captain } = useContext(CaptainDataContext)
     const navigate = useNavigate();
     const [payment,setPayment] = useState(false);
+    const [active , setActive] = useState(false);
+
+
+console.log(captain);
 
     useEffect(() => {
         socket.emit('join', {
@@ -52,6 +59,15 @@ const CaptainHome = () => {
 
         // return () => clearInterval(locationInterval)
     }, [])
+
+
+useEffect(()=>{
+if(ride?.rental?.status=="inactive"){
+  setActive(true);
+}
+},[ride])
+ 
+console.log(ride);
 
     socket.on('new-ride', (data) => {
         setRide(data)
@@ -119,26 +135,32 @@ const CaptainHome = () => {
      useGSAP(function () {
         if (ridePopupPanel) {
             gsap.to(ridePopupPanelRef.current, {
+                duration: 0.6,
                 transform: 'translateY(0)'
             })
         } else {
             gsap.to(ridePopupPanelRef.current, {
+                duration: 0.6,
                 transform: 'translateY(100%)'
             })
         }
     }, [ ridePopupPanel ])
-
+    
     useGSAP(function () {
         if (confirmRidePopupPanel) {
             gsap.to(confirmRidePopupPanelRef.current, {
+                duration: 0.6,
                 transform: 'translateY(0)'
             })
         } else {
             gsap.to(confirmRidePopupPanelRef.current, {
+                duration: 0.6,
                 transform: 'translateY(100%)'
             })
         }
     }, [ confirmRidePopupPanel ])
+
+    console.log(ride);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50">
@@ -152,13 +174,13 @@ const CaptainHome = () => {
               </svg>
             </div>
             <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-              Captain Portal
+              Renter's Portal
             </h1>
           </div>
           
           <nav className="flex items-center space-x-6">
             <button className="text-gray-600 hover:text-blue-600 transition-colors duration-300">
-              Dashboard
+              Edit Profile
             </button>
             <button className="text-gray-600 hover:text-blue-600 transition-colors duration-300">
               History
@@ -175,30 +197,40 @@ const CaptainHome = () => {
           <div className="flex items-center justify-between">
             <h2 className="text-xl font-semibold text-gray-800">Current Status</h2>
             <div className="flex items-center space-x-4">
-              <span className={`w-3 h-3 rounded-full ${payment ? 'bg-green-500' : 'bg-yellow-500'} animate-pulse`}></span>
+              <span className={`w-3 h-3 rounded-full ${ride?.rental?.status=="inactive" ? 'bg-red-500' : 'bg-green-500'} animate-pulse`}></span>
               <span className="text-sm text-gray-600">
-                {payment ? 'Payment Pending' : 'Available for Rides'}
+                {ride?.rental?.status=="inactive" ? 'Vechile Rented' : 'Available to rent'}
               </span>
             </div>
           </div>
         </div>
+        {/* New ride info displayed when ride is started */}
+        {active  && (
+        <CaptainRiding ride={ride}/>
+        )}
       </main>
 
       {/* Ride Popup Panels */}
-      <div ref={ridePopupPanelRef} className="fixed inset-x-0 bottom-0 transform translate-y-full bg-white/95 backdrop-blur-lg rounded-t-3xl shadow-2xl border-t border-gray-200">
+      { !confirmRidePopupPanel && (
+      <div ref={ridePopupPanelRef} style={{ transform: 'translateY(100%)', zIndex: 20 }} className="fixed inset-x-0 bottom-0 bg-white/95 backdrop-blur-lg rounded-t-3xl shadow-2xl border-t border-gray-200">
         <RidePopUp 
-        ride={ride}
-        setRidePopupPanel={setRidePopupPanel} 
-        setConfirmRidePopupPanel={setConfirmRidePopupPanel}
-        confirmRide={confirmRide} />
+          ride={ride}
+          setRidePopupPanel={setRidePopupPanel} 
+          setConfirmRidePopupPanel={setConfirmRidePopupPanel}
+          confirmRide={confirmRide} />
       </div>
-
-      <div ref={confirmRidePopupPanelRef} className="fixed inset-x-0 bottom-0 transform translate-y-full bg-white/95 backdrop-blur-lg rounded-t-3xl shadow-2xl border-t border-gray-200">
+      )}
+      
+      { confirmRidePopupPanel && (
+      <div ref={confirmRidePopupPanelRef} style={{ transform: 'translateY(100%)', zIndex: 30 }} className="fixed inset-x-0 bottom-0 bg-white/95 backdrop-blur-lg rounded-t-3xl shadow-2xl border-t border-gray-200">
         <ConfirmRidePopUp 
-        ride={ride} 
-        setRidePopupPanel={setRidePopupPanel}
-        setConfirmRidePopupPanel={setConfirmRidePopupPanel} />
+          ride={ride} 
+          setRidePopupPanel={setRidePopupPanel}
+          setConfirmRidePopupPanel={setConfirmRidePopupPanel}
+          setRide={setRide}
+          />
       </div>
+      )}
     </div>
   )
 }

@@ -3,21 +3,23 @@ import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 
 const ConfirmRidePopUp = (props) => {
-  const { ride, setConfirmRidePopupPanel, setRidePopupPanel } = props
+  const { ride, setConfirmRidePopupPanel, setRidePopupPanel,setRide } = props
   const [otp, setOtp] = useState('')
   const navigate = useNavigate()
 
   async function submitHandler(e) {
     e.preventDefault()
     try {
-      await axios.get(`${import.meta.env.VITE_BASE_URL}/ride/start-ride`, {
+    const response =  await axios.get(`${import.meta.env.VITE_BASE_URL}/ride/start-ride`, {
         params: { rideId: ride._id, otp: otp },
         headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
       })
-
+      
+      
       setConfirmRidePopupPanel(false)
       setRidePopupPanel(false)
-      navigate('/captain-riding', { state: { ride } })
+      setRide(response.data);
+      
     } catch (error) {
       console.error(error)
     }
@@ -53,7 +55,7 @@ const ConfirmRidePopUp = (props) => {
         </div>
       </div>
 
-      <div className="bg-green-50 rounded-xl p-4 animate-fade-in-up">
+      <div className="bg-green-50 rounded-xl p-4">
         <div className="flex items-center space-x-4">
           <div className="w-12 h-12 bg-green-600 rounded-lg flex items-center justify-center">
             <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
