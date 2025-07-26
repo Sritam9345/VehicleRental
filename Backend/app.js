@@ -14,11 +14,7 @@ const serverless = require('serverless-http')
 dbConnect();
 
 
-app.use(cors({
-  origin: '*',
-  methods:'*',
-  credentials: false,            
-}));
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 app.use(cookieParser());
