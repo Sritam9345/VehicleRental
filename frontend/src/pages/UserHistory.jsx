@@ -15,6 +15,7 @@ function UserHistory() {
         );
         setHistory(response.data);
       } catch (err) {
+        console.log(err);
         console.error('Error fetching history:', err);
       }
     }
