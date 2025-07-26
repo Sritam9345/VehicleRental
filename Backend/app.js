@@ -17,7 +17,7 @@ dbConnect();
 app.use(cors({
   origin: 'https://rent-wheelz2-0-6ujz-p1wxjr4bi-sritams-projects-56dc574a.vercel.app',
   methods: ['GET','POST','PUT','DELETE','OPTIONS'],
-  credentials: true,            // if you need cookies/auth
+  credentials: false,            
 }));
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
