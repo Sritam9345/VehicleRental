@@ -14,13 +14,11 @@ const serverless = require('serverless-http')
 dbConnect();
 
 
-app.use(cors(
-     {
-            origin: "*",
-            methods: "*",
-            credentials:"true"
-        }
-));
+app.use(cors({
+  origin: 'https://rent-wheelz2-0-6ujz-p1wxjr4bi-sritams-projects-56dc574a.vercel.app',
+  methods: ['GET','POST','PUT','DELETE','OPTIONS'],
+  credentials: true,            // if you need cookies/auth
+}));
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 app.use(cookieParser());
