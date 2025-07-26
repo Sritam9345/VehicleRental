@@ -200,9 +200,9 @@ console.log(ride);
            <Link to='/view-renter-profile' ><button className="text-gray-600 hover:text-blue-600 transition-colors duration-300">
               Profile
             </button></Link> 
-            <button className="text-gray-600 hover:text-blue-600 transition-colors duration-300">
+         <Link to='/captain-history'> <button className="text-gray-600 hover:text-blue-600 transition-colors duration-300">
               History
-            </button>
+            </button></Link>
           </nav>
         </div>
       </header>
@@ -224,7 +224,7 @@ console.log(ride);
         </div>
         {/* New ride info displayed when ride is started */}
         {active  && (
-        <CaptainRiding ride={ride}/>
+        <CaptainRiding ride={ride} setRide={setRide}/>
         )}
       </main>
 

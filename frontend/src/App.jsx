@@ -19,6 +19,10 @@ import RentalPayment from './pages/RentalPayment'
 import ViewProfile from './pages/ViewUserProfile'
 import CaptainProfile from './pages/CaptainProfile'
 import EditProfilePage from './pages/EditUserProfile'
+import EditCaptain from './pages/EditCaptain'
+import VechileInfo from './pages/VechileInfo'
+import CaptainHistory from './pages/CaptainHistory'
+import UserHistory from './pages/UserHistory'
 
 const App = () => {
 
@@ -65,15 +69,35 @@ const App = () => {
       }/>
 
       <Route path='/view-user-profile' element={
-<ViewProfile/>
+        <UserProtectWrapper>
+<ViewProfile/></UserProtectWrapper>
       }/>
 
     <Route path='/view-renter-profile' element={
-<CaptainProfile/>
+      <CaptainProtectWrapper>
+<CaptainProfile/></CaptainProtectWrapper>
     }/>
     <Route path='/edit-user-profile' element={
-      <EditProfilePage/>
+      <UserProtectWrapper>
+      <EditProfilePage/></UserProtectWrapper>
     }/>
+    <Route path='/edit-rental-profile' element={
+      <CaptainProtectWrapper>
+      <EditCaptain/></CaptainProtectWrapper>
+    }/>
+     <Route path='//vehicle-info' element={
+      <CaptainProtectWrapper>
+      <VechileInfo/></CaptainProtectWrapper>
+    }/>
+     <Route path='/captain-history' element={
+      <CaptainProtectWrapper>
+      <CaptainHistory/></CaptainProtectWrapper>
+    }/>
+    <Route path='/user-history' element={
+      <UserProtectWrapper>
+      <UserHistory/></UserProtectWrapper>
+    }/>
+
       </Routes>
     </div>
   )

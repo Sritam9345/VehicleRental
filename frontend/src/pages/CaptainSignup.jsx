@@ -40,11 +40,12 @@ const CaptainSignup = () => {
     e.preventDefault()
 try{
     const response1 = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${pickupLocation}&key=${apiKey}`);
-    const results = response1.data.results;
     
-    console.log(response1)
-    if (results.length > 0) {
-      location.current = results[0].geometry.location;
+    const {data} = response1;
+    
+    
+    if (data) {
+      console.log(data);
     } 
 
     else {
@@ -62,7 +63,9 @@ try{
         capacity: vehicleCapacity,
         type: vehicleType
       },
-      location:location.current
+      location:{
+        coordinates:[data.results[0].geometry.location.lat,data.results[0].geometry.location.lng]
+      }
     }
     const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/rental/register`, captainData)
 
@@ -76,9 +79,9 @@ try{
     
   
 }catch(error){
-
-  setError("Error locating the address..");
-  setErrorPopupPanel(true);
+console.log(error)
+  setError(true);
+  
 
 }
 

@@ -9,6 +9,7 @@ const Payment = () => {
   const { ride } = location.state || {}
   const { socket } = useContext(SocketContext)
 
+  console.log(ride)
   // Calculate elapsed time
   const getElapsedTime = () => {
     const start = new Date(ride?.startTime)
@@ -51,7 +52,7 @@ const Payment = () => {
         {/* Total Fare */}
         <div>
           <p className="text-xs text-gray-500 uppercase tracking-wide">Total Fare</p>
-          <p className="mt-1 text-2xl font-bold text-green-600">Rs {Math.floor(ride?.fare)}</p>
+          <p className="mt-1 text-2xl font-bold text-green-600">₹{Math.floor(ride?.fare)}</p>
         </div>
       </div>
 

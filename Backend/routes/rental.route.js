@@ -31,4 +31,6 @@ router.get("/profile",authRental,rentalController.getRentalProfile);
 
 router.patch("/update",authRental,rentalController.updateRental);
 
+router.get("/history",rentalController.getHistory)
+
 module.exports = router;

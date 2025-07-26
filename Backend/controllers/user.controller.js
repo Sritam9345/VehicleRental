@@ -3,6 +3,8 @@ const userModel = require("../models/user.model");
 const { createUser } = require("../service/user.service");
 const { blacklistTokenModel } = require("../models/blacklist.model");
 const {updateUser} = require("../service/user.service");
+const {history} = require("../service/user.service"); 
+
 
 module.exports.registerUser = async(req,res,next) =>{
     const error = validationResult(req);
@@ -99,10 +101,10 @@ module.exports.updateUser = async (req,res)=>{
        return res.status(400).json({error: error.array()})
     }
 
-    const {firstName, lastName,  oldPassword ,newPassword} = req.body;
+    const {userId,firstName, lastName,  oldPassword ,newPassword} = req.body;
 try{
     const user = await updateUser({
-        userId:req.userId,
+        userId:userId,
         firstName:firstName,
         lastName:lastName,
         oldPassword:oldPassword,
@@ -113,4 +115,13 @@ try{
     return res.status(400).json({error:error.message});
 }
   
+}
+
+module.exports.getHistory = async(req,res,next)=> {
+    
+    const userId = req.query.userId;
+
+    const response = await history(userId);
+
+    res.send(response);
 }

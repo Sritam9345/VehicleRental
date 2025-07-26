@@ -1,4 +1,5 @@
 const userModel = require("../models/user.model")
+const rideModel = require("../models/ride.model");
 
 module.exports.createUser = async ({firstName,lastName,email,password})=>{
     if(!firstName || !password || !email){
@@ -72,4 +73,15 @@ module.exports.transaction = async(user,fare)=>{
             expenses: user.expenses + fare
         },{new:true});
 }
+
+
+
+module.exports.history = async (userId) =>{
+
+const totalRents = await rideModel.find({user:userId}).populate('rental').populate('user');
+return totalRents;
+
+}
+
+
 

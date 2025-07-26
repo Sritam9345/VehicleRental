@@ -26,10 +26,16 @@ console.log(location);
                 <LoadScript googleMapsApiKey={apiKey}>
                     <GoogleMap
                         mapContainerStyle={{width: '100%', height: '100%'}}
-                        center={currentPosition}
+                        center={{
+        lat: props.ride?.rental?.location.coordinates[1],
+        lng: props.ride?.rental?.location.coordinates[0]
+    }}
                         zoom={15}
                     >
-                        <Marker position={currentPosition} />
+                        <Marker position={{
+        lat: props.ride?.rental?.location.coordinates[1],
+        lng: props.ride?.rental?.location.coordinates[0]
+    }} />
                     </GoogleMap>
                 </LoadScript>
             ) : (

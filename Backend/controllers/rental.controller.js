@@ -3,7 +3,8 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const { blacklistTokenModel } = require("../models/blacklist.model");
 const { validationResult } = require("express-validator");
-const { createRental } = require("../service/rental.service");
+const { createRental, history } = require("../service/rental.service");
+const {updateRental} = require("../service/rental.service")
 
 module.exports.registerRental = async (req, res, next) => {
     const error = validationResult(req);
@@ -101,15 +102,17 @@ module.exports.getRentalProfile = async (req, res) => {
 module.exports.updateRental = async (req, res, next) => {
     const error = validationResult(req);
 
+
     if (error.errors.length != 0) {
         console.log(error);
         return res.status(400).json({ error: error.array() });
     }
 
-    const { firstName, lastName, oldPassword, newPassword } = req.body;
+    const {rentalId ,firstName, lastName, oldPassword, newPassword } = req.body;
 
+    
     const rental = await updateRental({
-        rentalId: req.rental._id,
+        rentalId: rentalId,
         firstName: firstName,
         lastName: lastName,
         oldPassword: oldPassword,
@@ -118,3 +121,14 @@ module.exports.updateRental = async (req, res, next) => {
 
     res.status(200).json({ rental });
 };
+
+
+module.exports.getHistory = async(req,res,next)=> {
+    
+    console.log("req.body is",req.body);
+    const rentalId = req.query.rentalId;
+
+    const response = await history(rentalId);
+
+    res.send(response);
+}

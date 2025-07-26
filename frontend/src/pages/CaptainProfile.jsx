@@ -1,11 +1,21 @@
 import React, { useContext } from 'react';
 import { CaptainDataContext } from '../context/CapatainContext'
+import { Link } from 'react-router-dom'
 
 export default function ProfilePage() {
 
    const { captain } = useContext(CaptainDataContext);
 
-console.log(captain);
+
+   if (!captain) {
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-gray-200 to-gray-400">
+        <p className="text-lg font-medium text-gray-700 animate-pulse">
+          Please open this page from Homepage again...
+        </p>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
@@ -13,7 +23,7 @@ console.log(captain);
         <div className="flex items-center space-x-4">
           <img
             className="h-20 w-20 rounded-full object-cover"
-            src="https://via.placeholder.com/80"
+            src="/e6e4df26ba752161b9fc6a17321fa286.jpg"
             alt="User avatar"
           />
           <div>
@@ -55,10 +65,17 @@ console.log(captain);
           </div>
         </div>
 
-        <div className="mt-6">
-          <button className="w-full bg-blue-600 text-white py-2 rounded-xl hover:bg-blue-700 transition">
-            Edit Profile
-          </button>
+        <div className="mt-6 flex w-full space-x-4">
+          <Link to='/edit-rental-profile' className="w-full">
+            <button className="w-full bg-blue-600 text-white py-3 px-4 rounded-xl shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 transition">
+              Edit Profile
+            </button>
+          </Link>
+          <Link to='/vehicle-info' className="w-full">
+            <button className="w-full bg-green-600 text-white py-3 px-4 rounded-xl shadow-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-400 transition">
+              Vehicle Info
+            </button>
+          </Link>
         </div>
       </div>
     </div>

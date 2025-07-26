@@ -1,6 +1,7 @@
 import React from 'react'
 import { UserDataContext } from '../context/UserContext'
 import { useContext } from 'react'
+import { Link } from 'react-router-dom'
 const ViewProfile = () => {
   // Hardcoded user data
   const { user } = useContext(UserDataContext)
@@ -31,12 +32,21 @@ const ViewProfile = () => {
             <p className="mt-1 text-lg text-gray-900">₹{Math.floor(user.expenses)}</p>
           </div>
         </div>
-        <div className="mt-8 flex justify-end">
-          <button
-            className="px-6 py-2 bg-blue-600 text-white font-semibold rounded-lg shadow hover:bg-blue-700 transition"
-          >
-            Edit Profile
-          </button>
+        <div className="mt-10 flex justify-end gap-6">
+          <Link to='/edit-user-profile'>
+            <button
+              className="w-36 px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg shadow hover:bg-blue-700 transition"
+            >
+              Edit Profile
+            </button>
+          </Link>
+          <Link to='/user-history'>
+            <button
+              className="w-36 px-6 py-3 bg-green-600 text-white font-semibold rounded-lg shadow hover:bg-green-700 transition"
+            >
+              History
+            </button>
+          </Link>
         </div>
       </div>
     </div>

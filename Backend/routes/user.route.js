@@ -22,5 +22,9 @@ body('password').isLength({min: 6}).withMessage("password is too short")
 router.get("/profile",authUser,userController.getUserProfile);
 router.get("/logout",authUser,userController.logoutUser);
 router.patch("/update",authUser,userController.updateUser);
+router.get("/history",userController.getHistory)
+
+
+
 
 module.exports = router;

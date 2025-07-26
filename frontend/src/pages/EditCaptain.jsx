@@ -1,20 +1,21 @@
 import React, { useEffect, useState,useContext } from 'react';
 import ErrorUpdate from '../components/ErrorUpdate';
-import { UserDataContext } from '../context/UserContext';
+import { CaptainDataContext } from '../context/CapatainContext';
 import axios from 'axios';
 
-export default function EditProfilePage() {
+
+export default function EditCaptain() {
   // Hardcoded rental user data
-  
-const token = localStorage.getItem('token');
+  const token = localStorage.getItem('token');
+  const {captain} = useContext(CaptainDataContext);
 
   const [error,setError] = useState(false);
   const [errorPopupPanel,setErrorPopupPanel ] = useState(false);
-  const {user} = useContext(UserDataContext);
+
 
   // Form state
-  const [firstName, setFirstName] = useState(user.firstName);
-  const [lastName, setLastName] = useState(user.lastName);
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
   const [oldPassword, setOldPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -25,6 +26,8 @@ const token = localStorage.getItem('token');
       else setErrorPopupPanel(false);
   },[error])
 
+ 
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (newPassword && newPassword !== confirmPassword) {
@@ -33,33 +36,34 @@ const token = localStorage.getItem('token');
     }
     try {
 
-      const updateUser = {
-        userId:user._id,
+      const updateRental = {
+        rentalId:captain._id,
         firstName:firstName,
         lastName:lastName,
         oldPassword:oldPassword,
         newPassword:newPassword
       }
 
-      await axios.patch(`${import.meta.env.VITE_BASE_URL}/user/update`,updateUser,
-        {
-           headers: {
+      await axios.patch(`${import.meta.env.VITE_BASE_URL}/rental/update`, updateRental, {
+                headers: {
                   Authorization: `Bearer ${token}`
                 }
-        }
-      );
+            });
     alert('Profile updated successfully!');
     } catch (error) {
-      console.log(error);
+        console.log(error)
       setError(true);
     }
    
   };
 
-  if (!user) {
+
+    if (!captain) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-gray-100">
-        <p className="text-gray-600">Please open this page from Hompage again...</p>
+      <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-gray-200 to-gray-400">
+        <p className="text-lg font-medium text-gray-700 animate-pulse">
+          Please open this page from Homepage again...
+        </p>
       </div>
     );
   }
@@ -82,24 +86,24 @@ const token = localStorage.getItem('token');
             />
             <div>
               <h2 className="text-2xl font-semibold text-gray-800">
-                {user.firstName} {user.lastName}
+                {captain.firstName} {captain.lastName}
               </h2>
-              <p className="text-gray-500">Borrower</p>
+              <p className="text-gray-500">Rental Partner</p>
             </div>
           </div>
 
           {/* Metrics */}
           <div className="mt-6 grid grid-cols-2 gap-4">
             <div className="bg-gray-50 rounded-xl p-4 text-center">
-              <p className="text-sm text-gray-600">Total Spent</p>
+              <p className="text-sm text-gray-600">Total Earned</p>
               <p className="mt-1 text-xl font-medium text-gray-800">
-                ₹{Math.floor(user.expenses)}
+                ₹{Math.floor(captain?.earned)}
               </p>
             </div>
             <div className="bg-gray-50 rounded-xl p-4 text-center">
-              <p className="text-sm text-gray-600">Total Borrowed</p>
+              <p className="text-sm text-gray-600">Total Rented</p>
               <p className="mt-1 text-xl font-medium text-gray-800">
-                {user.borrowed}
+                {captain.rented}
               </p>
             </div>
           </div>

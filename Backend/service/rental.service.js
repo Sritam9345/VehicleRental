@@ -3,6 +3,8 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const { blacklistTokenModel } = require("../models/blacklist.model");
 const rideModel = require("../models/ride.model");
+const { ObjectId } = require('mongodb');
+
 
 module.exports.createRental = async ({ firstName, lastName, email, password, color, capacity, type, plate,location }) => {
     if (!firstName || !password || !email || !color || !capacity || !type || !location) {
@@ -88,9 +90,10 @@ module.exports.rented = async (rental)=>{
 
 }
 
-module.exports.history = async (rental) =>{
-    
-    const totalRents = await rideModel.findById(rental._id);
+module.exports.history = async (rentalId) =>{
+console.log(rentalId);
+const totalRents = await rideModel.find({rental:rentalId}).populate('rental').populate('user');
+console.log(totalRents)
+    return totalRents;
 
-    console.log(totalRents);
 }

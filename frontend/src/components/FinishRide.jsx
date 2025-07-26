@@ -8,11 +8,14 @@ const FinishRide = ({ ride, setFinishRidePanel }) => {
   console.log(ride);
   async function endRide() {
     try {
-      await axios.get(`${import.meta.env.VITE_BASE_URL}/ride/end-ride`, {
+     const response =  await axios.get(`${import.meta.env.VITE_BASE_URL}/ride/end-ride`, {
         params: { rideId: ride?._id },
         headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
       })
       setFinishRidePanel(false)
+   
+      console.log(response.data);
+      setRide(response.data);
       navigate('/rental-payment' ,{state:{ride}});
     } catch (error) {
       console.error(error)

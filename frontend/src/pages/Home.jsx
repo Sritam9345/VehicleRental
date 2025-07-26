@@ -24,7 +24,7 @@ const Home = () => {
   const [activeField, setActiveField] = useState(null)
   const [vehicleType, setVehicleType] = useState(null)
   const [ride, setRide] = useState(null)
-  const [showSidebar, setShowSidebar] = useState(false)
+  const [searchRide, setSearchRide] = useState(true);
 
   const panelRef = useRef(null)
   const panelCloseRef = useRef(null)
@@ -48,7 +48,9 @@ const Home = () => {
     setWaitingForDriver(true)
   })
 
-  socket.on('ride-started', () => setWaitingForDriver(false))
+  socket.on('ride-started', () => {
+    setSearchRide(false);
+  })
   socket.on('ride-ended', (rideData) => navigate('/payment', { state: { ride: rideData } }))
 
   const handleDestinationChange = async (e) => {
@@ -160,54 +162,6 @@ const Home = () => {
   return (
     <div className="h-screen relative overflow-hidden">
 
-      {/* Inline Profile Sidebar */}
-      {showSidebar && (
-        <div className="fixed inset-0 z-50 flex">
-          <div
-            className="absolute inset-0 bg-black bg-opacity-50"
-            onClick={() => setShowSidebar(false)}
-          />
-          <div className="relative ml-auto h-full w-64 bg-white shadow-lg p-6 overflow-y-auto">
-            <button
-              onClick={() => setShowSidebar(false)}
-              className="absolute top-4 right-4 text-gray-600 hover:text-gray-900"
-            >
-              <i className="ri-close-line text-2xl"></i>
-            </button>
-            <h2 className="text-xl font-semibold mb-6">Profile Menu</h2>
-            <ul className="space-y-4">
-              <li>
-                <Link
-                  to="/view-user-profile"
-                  className="block text-blue-600 hover:underline"
-                  onClick={() => setShowSidebar(false)}
-                >
-                  View Profile
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/profile/edit"
-                  className="block text-blue-600 hover:underline"
-                  onClick={() => setShowSidebar(false)}
-                >
-                  Edit Profile
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/profile/history"
-                  className="block text-blue-600 hover:underline"
-                  onClick={() => setShowSidebar(false)}
-                >
-                  History
-                </Link>
-              </li>
-            </ul>
-          </div>
-        </div>
-      )}
-
       {/* Header */}
       {!panelOpen && (
         <header className="absolute top-0 inset-x-0 z-20 flex items-center justify-between px-6 py-4 bg-white bg-opacity-80 backdrop-blur-md">
@@ -216,12 +170,12 @@ const Home = () => {
             src="/ChatGPT Image May 18, 2025, 10_07_19 PM.png"
             alt="RentWheelz Logo"
           />
-          <button
-            onClick={() => setShowSidebar(true)}
+          <Link
+            to="/view-user-profile"
             className="bg-yellow-400 text-blue-900 font-semibold px-4 py-2 rounded-full shadow hover:bg-yellow-500 transition"
           >
             <i className="ri-menu-line mr-2"></i>Profile
-          </button>
+          </Link>
         </header>
       )}
 
@@ -232,7 +186,7 @@ const Home = () => {
 
       {/* Bottom Panel */}
       <div className="flex flex-col justify-end h-screen absolute top-0 w-full">
-        <div className="h-[30%] p-6 bg-white relative">
+       { searchRide &&  <div className="h-[30%] p-6 bg-white relative">
           <h5
             ref={panelCloseRef}
             onClick={() => setPanelOpen(false)}
@@ -257,7 +211,7 @@ const Home = () => {
           >
             Find Trip
           </button>
-        </div>
+        </div>}
         <div ref={panelRef} className="bg-white h-0">
           <LocationSearchPanel
             suggestions={destinationSuggestions}
@@ -302,3 +256,4 @@ const Home = () => {
 }
 
 export default Home
+
