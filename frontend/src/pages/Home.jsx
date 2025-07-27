@@ -39,8 +39,8 @@ const Home = () => {
 
   useEffect(() => {
     socket.emit('join', { userType: 'user', userId: user._id })
-   
-    const updateLocation = () => {
+    
+    
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(position => {
                   console.log(position);
@@ -52,10 +52,7 @@ const Home = () => {
                     })
                 })
             }
-        }
-
       
-       updateLocation()
 
        
   }, []);

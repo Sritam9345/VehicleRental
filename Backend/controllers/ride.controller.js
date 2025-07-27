@@ -43,7 +43,7 @@ console.log(pickupCoordinates,"hi");
 const ltd = pickupCoordinates.coordinates[1]
 const lng = pickupCoordinates.coordinates[0]
 
- const {rentals} = await getRentalsInTheRadius(ltd,lng,2.0);
+ const {rentals} = await getRentalsInTheRadius(ltd,lng,10.0);
 
 
 

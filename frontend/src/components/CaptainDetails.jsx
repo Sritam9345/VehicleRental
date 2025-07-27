@@ -39,7 +39,7 @@ const CaptainDetails = () => {
     if (captain?.location?.coordinates) {
       getAddress()
     }
-  }, [])
+  }, [captain])
 
   return (
     <div className="bg-white rounded-xl shadow-lg p-6 animate-fade-in">

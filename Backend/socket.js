@@ -31,31 +31,10 @@ function initializeSocket(server) {
             }
         });
 
-        // socket.on('updateLocationRental', async (data) => {
-        //     const { rentalId, location } = data;
-        //     console.log(data);
-        //     if (!location || !location.ltd || !location.lng) {
-        //         socket.emit("error", { message: "Invalid Location!",
-        //             data:data
-        //          });
-        //         return;
-        //     }
-
-        //     await rentalModel.findByIdAndUpdate(rentalId, {
-        //         location: {
-        //             ltd: location.ltd,
-        //             lng: location.lng
-        //         }
-        //     });
-        // });
-      
         socket.on('update-location-user', async (data) => {
             const { userId , location } = data;
             
-            if (!location || location?.coordinates?.size!==2) {
-                socket.emit("error", { message: "Invalid Location!" });
-                return;
-            }
+        
 
           const response =  await userModel.findByIdAndUpdate(userId, {
                 location: {

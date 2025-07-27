@@ -129,16 +129,16 @@ module.exports.getAutoCompleteSuggestion = async (input) => {
 }
 
 module.exports.getRentalsInTheRadius = async (lat, lng, radius) => {
-    
+    console.log(lat,lng);
 try{
     const rentals = await rentalModel.find({
         location: {
             $geoWithin: {
-                $centerSphere: [[lng, lat], radius / 6378.1] // radius in kilometers
+                $centerSphere: [[lng, lat], radius /6378.1] 
             }
         }
     });
-console.log(rentals);
+console.log("Total rentals",rentals);
     return {
         rentals
     };} catch(error){
