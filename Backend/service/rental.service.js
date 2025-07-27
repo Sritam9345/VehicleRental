@@ -6,7 +6,7 @@ const rideModel = require("../models/ride.model");
 const { ObjectId } = require('mongodb');
 
 
-module.exports.createRental = async ({ firstName, lastName, email, password, color, capacity, type, plate,location }) => {
+module.exports.createRental = async ({ firstName, lastName, email, password, color, capacity,number, type, plate,location,name }) => {
     if (!firstName || !password || !email || !color || !capacity || !type || !location) {
         throw new Error('All fields are required');
     }
@@ -17,13 +17,15 @@ module.exports.createRental = async ({ firstName, lastName, email, password, col
         const rental = await rentalModel.create({
             firstName,
             lastName,
+            number,
             email,
             password,
             vechile: {
                 color,
                 capacity,
                 type,
-                plate
+                plate,
+                name
             },
             location
         });
@@ -33,7 +35,7 @@ module.exports.createRental = async ({ firstName, lastName, email, password, col
     }
 }
 
-module.exports.updateRental = async ({ rentalId, firstName, lastName, oldPassword, newPassword }) => {
+module.exports.updateRental = async ({ rentalId, firstName, lastName, oldPassword, newPassword, newLocation }) => {
     try {
         const rental = await rentalModel
             .findById(rentalId)
@@ -51,6 +53,8 @@ module.exports.updateRental = async ({ rentalId, firstName, lastName, oldPasswor
 
         let newHashedPassword = undefined;
 
+        console.log("The new locaion is",newLocation);
+
         if (newPassword) {
             newHashedPassword = await rentalModel.hashPassword(newPassword);
         }
@@ -61,6 +65,10 @@ module.exports.updateRental = async ({ rentalId, firstName, lastName, oldPasswor
                 firstName: firstName || rental.firstName,
                 lastName: lastName || rental.lastName,
                 password: newHashedPassword || rental.password,
+                location: {
+                    type:"Point",
+                    coordinates:[newLocation.coordinates[0],newLocation.coordinates[1]]
+                }
             },
             { new: true }
         );

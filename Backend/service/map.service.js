@@ -130,7 +130,7 @@ module.exports.getAutoCompleteSuggestion = async (input) => {
 
 module.exports.getRentalsInTheRadius = async (lat, lng, radius) => {
     
-
+try{
     const rentals = await rentalModel.find({
         location: {
             $geoWithin: {
@@ -141,5 +141,7 @@ module.exports.getRentalsInTheRadius = async (lat, lng, radius) => {
 console.log(rentals);
     return {
         rentals
-    };
+    };} catch(error){
+        throw(error);
+    }
 };

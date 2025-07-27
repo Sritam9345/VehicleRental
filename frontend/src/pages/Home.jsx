@@ -39,7 +39,26 @@ const Home = () => {
 
   useEffect(() => {
     socket.emit('join', { userType: 'user', userId: user._id })
-  }, [user])
+   
+    const updateLocation = () => {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(position => {
+                  console.log(position);
+                    socket.emit('update-location-user', {
+                        userId: user._id,
+                        location: {
+                           coordinates:[position.coords.latitude,position.coords.longitude]
+                        }
+                    })
+                })
+            }
+        }
+
+      
+       updateLocation()
+
+       
+  }, []);
 
   socket.on('ride-confirmed', (data) => {
    console.log("ride-confirmed")

@@ -70,6 +70,7 @@ if(rentals.length!==0)rentals.map(rentals =>{
 
 
 module.exports.getFare = async (req,res,next)=>{
+  try{
     const error = validationResult(req);
    
     if(error.errors.length != 0){
@@ -88,7 +89,9 @@ module.exports.getFare = async (req,res,next)=>{
     scooty:scooty,
     car:car,
     bike:bike
-  })
+  })} catch(error){
+res.status(500).send(error);
+  }
 
 }
 
@@ -152,7 +155,7 @@ module.exports.startRide = async(req,res,next)=>{
         return res.status(200).send(ride);
 
     } catch (error) {
-        throw new Error(error);
+        return res.status(500).send(error.message);
     }
 }
 
@@ -162,7 +165,7 @@ module.exports.endRide = async(req,res,next)=>{
    
     if(error.errors.length != 0){
       console.log(error.errors);
-        throw new Error(error);
+        return res.status(500).send(error.message);
     }
 
     const {rideId} = req.query;
@@ -183,6 +186,6 @@ module.exports.endRide = async(req,res,next)=>{
 
         return res.status(200).send(ride);
     } catch (error) {
-        throw new Error(error);
+        return res.status(500).send(error.message);
     }
 }

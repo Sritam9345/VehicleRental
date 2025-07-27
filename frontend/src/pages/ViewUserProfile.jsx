@@ -31,6 +31,10 @@ const ViewProfile = () => {
             <h2 className="text-sm font-medium text-gray-500">Total Amount Transacted</h2>
             <p className="mt-1 text-lg text-gray-900">₹{Math.floor(user.expenses)}</p>
           </div>
+           <div>
+            <h2 className="text-sm font-medium text-gray-500">Phone Number</h2>
+            <p className="mt-1 text-lg text-gray-900">{user.number}</p>
+          </div>
         </div>
         <div className="mt-10 flex justify-end gap-6">
           <Link to='/edit-user-profile'>

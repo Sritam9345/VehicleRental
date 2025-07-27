@@ -1,4 +1,4 @@
-import React, { useEffect, useState,useContext } from 'react';
+import React, { useEffect, useState, useContext, useRef } from 'react';
 import ErrorUpdate from '../components/ErrorUpdate';
 import { CaptainDataContext } from '../context/CapatainContext';
 import axios from 'axios';
@@ -7,42 +7,59 @@ import axios from 'axios';
 export default function EditCaptain() {
   // Hardcoded rental user data
   const token = localStorage.getItem('token');
-  const {captain} = useContext(CaptainDataContext);
+  const { captain } = useContext(CaptainDataContext);
+  const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY
 
-  const [error,setError] = useState(false);
-  const [errorPopupPanel,setErrorPopupPanel ] = useState(false);
-
-
-  // Form state
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
+  const [error, setError] = useState(false);
+  const [errorPopupPanel, setErrorPopupPanel] = useState(false);
+  const [newLocation, setNewLocation] = useState(''); 
   const [oldPassword, setOldPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const coordinates = useRef('');
 
-
-  useEffect(()=>{
-    if(error==true) setErrorPopupPanel(true)
-      else setErrorPopupPanel(false);
-  },[error])
-
- 
+  useEffect(() => {
+    if (error === true) setErrorPopupPanel(true);
+    else setErrorPopupPanel(false);
+  }, [error])
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+     coordinates.current = captain.location;
+    console.log(captain.location);
     if (newPassword && newPassword !== confirmPassword) {
       alert('New passwords do not match');
       return;
     }
+
+    if(newLocation){
+     try {
+
+      const response = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${newLocation}&key=${apiKey}`);
+      const {data} = response;
+      
+      if(data){
+coordinates.current = [data.results[0].geometry.location.lat,data.results[0].geometry.location.lng];
+console.log(coordinates);
+}
+
+    } catch (error) {
+      console.log(error);
+      alert("the Location address is invalid!!");
+     }
+    
+    }
+
     try {
 
       const updateRental = {
-        rentalId:captain._id,
-        firstName:firstName,
-        lastName:lastName,
-        oldPassword:oldPassword,
-        newPassword:newPassword
+        rentalId: captain._id,
+        oldPassword: oldPassword,
+        newPassword: newPassword,
+        location: {
+        coordinates: coordinates.current 
       }
+      };
 
       await axios.patch(`${import.meta.env.VITE_BASE_URL}/rental/update`, updateRental, {
                 headers: {
@@ -109,32 +126,20 @@ export default function EditCaptain() {
           </div>
 
           {/* Edit Form */}
-          <form onSubmit={(e)=>handleSubmit(e)} className="mt-6 space-y-4">
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700">
-                  First Name
-                </label>
-                <input
-                  type="text"
-                  value={firstName}
-                  onChange={e => setFirstName(e.target.value)}
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700">
-                  Last Name
-                </label>
-                <input
-                  type="text"
-                  value={lastName}
-                  onChange={e => setLastName(e.target.value)}
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                />
-              </div>
+          <form onSubmit={(e) => handleSubmit(e)} className="mt-6 space-y-4">
+            {/* Removed firstName and lastName input block */}
+            {/* New Location input */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700">
+                New Location
+              </label>
+              <input
+                type="text"
+                value={newLocation}
+                onChange={e => setNewLocation(e.target.value)}
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500"
+              />
             </div>
-
             <div>
               <label className="block text-sm font-medium text-gray-700">
                 Old Password
@@ -143,6 +148,7 @@ export default function EditCaptain() {
                 type="password"
                 value={oldPassword}
                 onChange={e => setOldPassword(e.target.value)}
+                required
                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500"
               />
             </div>

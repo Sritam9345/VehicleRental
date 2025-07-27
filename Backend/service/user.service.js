@@ -59,11 +59,14 @@ let newHashedPassword = undefined;
 
 
 module.exports.borrowed = async (user)=>{
-        
+    try{    
     const updatedUser = await userModel.findByIdAndUpdate
         (user._id,{
             borrowed: user.borrowed+1
-        },{new:true});
+        },{new:true});}
+        catch(error){
+            throw(error);
+        }
 
 }
 
@@ -77,9 +80,12 @@ module.exports.transaction = async(user,fare)=>{
 
 
 module.exports.history = async (userId) =>{
-
+try{
 const totalRents = await rideModel.find({user:userId}).populate('rental').populate('user');
-return totalRents;
+return totalRents;}
+catch(error){
+    throw (error);
+}
 
 }
 

@@ -3,6 +3,7 @@ import { CaptainDataContext } from '../context/CapatainContext'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 
+
 const CaptainProtectWrapper = ({
     children
 }) => {
@@ -11,7 +12,7 @@ const CaptainProtectWrapper = ({
     const navigate = useNavigate()
     const { captain, setCaptain } = useContext(CaptainDataContext)
     const [ isLoading, setIsLoading ] = useState(true)
-
+    const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 
 
 

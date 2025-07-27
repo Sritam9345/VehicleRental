@@ -15,6 +15,11 @@ const userSchema = new Schema({
         type: String,
         minlength: [3, 'Last Name must be 3 characters long']
     },
+    number:{
+      type:String,
+      minlength:[10,'Phone Number is invalid'],
+      default:"123456789"
+    },
     email: {
         type: String,
         required: true,

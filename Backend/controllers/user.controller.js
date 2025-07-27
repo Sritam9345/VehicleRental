@@ -13,7 +13,8 @@ module.exports.registerUser = async(req,res,next) =>{
         console.log(error);
        return res.status(400).json({error: error.array()})
     }
-const {firstName,lastName, email, password} = req.body;
+try{
+    const {firstName,lastName, email, password} = req.body;
 
 const isUserAlreadyRegistered
  = await userModel.findOne({email:email});
@@ -32,10 +33,16 @@ if(isUserAlreadyRegistered){
         email:email,
         password:hashedPassword
     });
-
-    const token = user.generateAuthToken();
+ const token = user.generateAuthToken();
 
     res.status(201).json({token,user});
+
+}
+    catch(error){
+        return res.status(500).send(error.message);
+    }
+
+   
 
 }
 
@@ -48,12 +55,12 @@ module.exports.loginUser = async(req,res,next)=>{
     }
 
     const {email , password} = req.body;
-    
+    try{
     const user = await userModel.findOne({
         email:email
     }).select('+password');
 
-    if(!user){
+ if(!user){
         return res.status(401).json({
             message:"Haha wrong credentials fool"
         })
@@ -74,6 +81,12 @@ module.exports.loginUser = async(req,res,next)=>{
         user:user
     })
 
+}
+    catch(error){
+        return res.status(500).send(error.message);
+    }
+
+   
 }
 
 module.exports.getUserProfile = async (req,res)=>{
@@ -120,8 +133,11 @@ try{
 module.exports.getHistory = async(req,res,next)=> {
     
     const userId = req.query.userId;
-
+try{
     const response = await history(userId);
 
-    res.send(response);
+    res.send(response);}
+    catch(error){
+    return res.status(500).send(error.message);
+    }
 }

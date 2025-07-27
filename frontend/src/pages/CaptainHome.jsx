@@ -40,7 +40,7 @@ const CaptainHome = () => {
   const [ active, setActive ] = useLocalStorageState('active', false)
 
 
-console.log(captain);
+console.log(captain.vechile.name);
 
 
 useEffect(()=>{
@@ -57,25 +57,6 @@ useEffect(()=>{
             userId: captain._id,
             userType: 'rental'
         })
-        // const updateLocation = () => {
-        //     if (navigator.geolocation) {
-        //         navigator.geolocation.getCurrentPosition(position => {
-
-        //             socket.emit('update-location-captain', {
-        //                 captainId: captain._id,
-        //                 location: {
-        //                     ltd: position.coords.latitude,
-        //                     lng: position.coords.longitude
-        //                 }
-        //             })
-        //         })
-        //     }
-        // }
-
-        //const locationInterval = setInterval(updateLocation, 10000)
-     //   updateLocation()
-
-        // return () => clearInterval(locationInterval)
     }, [])
 
 

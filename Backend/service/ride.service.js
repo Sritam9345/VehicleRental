@@ -21,7 +21,7 @@ module.exports.createRide = async ({userId,destination,vechile}) => {
          }
 
           
-    
+    try{
             const ride = await RideModel.create({
                 user: userId,
                 destination: destination,
@@ -35,6 +35,8 @@ module.exports.createRide = async ({userId,destination,vechile}) => {
     
        return {
         ride
+       }}catch(error){
+        throw(error);
        }
      
     }
@@ -47,7 +49,7 @@ module.exports.confirmRide = async(rideId,rentalId)=>{
         }
 
         console.log(`this is conform ride ${rideId}`);
-    
+    try{
         await RideModel.findByIdAndUpdate({_id:rideId},{
             status:"accepted",
             rental:rentalId,
@@ -59,7 +61,9 @@ module.exports.confirmRide = async(rideId,rentalId)=>{
 
         const ride = await RideModel.findById({_id:rideId}).populate('user').populate('rental').select('+otp');
         console.log(ride);
-        return ride; 
+        return ride; }catch(error){
+            throw(error);
+        }
 
         
     
@@ -100,7 +104,7 @@ module.exports.startRide = async ({ rideId, otp, rental }) => {
 
  module.exports.endRide = async({rideId , rental})=>{
 
-        if(!rideId){
+    try {    if(!rideId){
             throw new Error("ride id is required");
         }
     
@@ -166,9 +170,9 @@ console.log(basePrice);
             status:"active"
         });
     
-
-
-        return rideData;
+        return rideData;} catch(error){
+            throw(error);
+        }
     
     }
     

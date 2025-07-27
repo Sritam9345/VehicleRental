@@ -49,20 +49,22 @@ function initializeSocket(server) {
         //     });
         // });
       
-        socket.on('updateLocationUser', async (data) => {
+        socket.on('update-location-user', async (data) => {
             const { userId , location } = data;
-
-            if (!location || !location.ltd || !location.lng) {
+            
+            if (!location || location?.coordinates?.size!==2) {
                 socket.emit("error", { message: "Invalid Location!" });
                 return;
             }
 
-            await rentalModel.findByIdAndUpdate(rentalId, {
+          const response =  await userModel.findByIdAndUpdate(userId, {
                 location: {
-                    ltd: location.ltd,
-                    lng: location.lng
+                   type:"Point",
+                   coordinates:[location.coordinates[0],location.coordinates[1]]
                 }
             });
+            console.log(response);
+
         });
 
 

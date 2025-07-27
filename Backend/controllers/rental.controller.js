@@ -13,7 +13,7 @@ module.exports.registerRental = async (req, res, next) => {
         console.log(error);
         return res.status(400).json({ error: error.array() });
     }
-    const { firstName, lastName, email, password, vechile,location } = req.body;
+    const { firstName, lastName, email, password, vechile,location,number } = req.body;
 
     const isRentalAlreadyRegistered = await rentalModel.findOne({ email: email });
 
@@ -28,13 +28,15 @@ try{
     const rental = await createRental({
         firstName: firstName,
         lastName: lastName,
+        number:number,
         email: email,
         password: hashedPassword,
         color: vechile.color,
         capacity: vechile.capacity,
         type: vechile.type,
         plate: vechile.plate,
-        location:location
+        location:location,
+        name:vechile.name
     });
 
     const token = rental.generateAuthToken();
@@ -43,8 +45,8 @@ try{
 
 
 }
-    catch(e){
-        console.log(e);
+    catch(error){
+        throw (error);
     }
 
 };
@@ -58,10 +60,11 @@ module.exports.loginRental = async (req, res, next) => {
     }
 
     const { email, password } = req.body;
-
+try{
     const rental = await rentalModel.findOne({
         email: email
     }).select('+password');
+    
 
     if (!rental) {
         return res.status(401).json({
@@ -80,7 +83,11 @@ module.exports.loginRental = async (req, res, next) => {
     const token = rental.generateAuthToken();
 
     res.status(200).json({ token, rental });
-};
+}catch(error){
+    throw(error);
+}
+
+}
 
 module.exports.logoutRental = async (req, res, next) => {
     res.clearCookie('token');
@@ -108,18 +115,23 @@ module.exports.updateRental = async (req, res, next) => {
         return res.status(400).json({ error: error.array() });
     }
 
-    const {rentalId ,firstName, lastName, oldPassword, newPassword } = req.body;
+    const {rentalId ,firstName, lastName, oldPassword, newPassword,location } = req.body;
 
-    
+   console.log(location);
+try{
     const rental = await updateRental({
         rentalId: rentalId,
         firstName: firstName,
         lastName: lastName,
         oldPassword: oldPassword,
-        newPassword: newPassword
+        newPassword: newPassword,
+        newLocation:location
     });
 
-    res.status(200).json({ rental });
+    res.status(200).json({ rental });}
+    catch(error){
+       return res.status(500).send(error.message);
+    }
 };
 
 
@@ -127,8 +139,11 @@ module.exports.getHistory = async(req,res,next)=> {
     
     console.log("req.body is",req.body);
     const rentalId = req.query.rentalId;
-
+try{
     const response = await history(rentalId);
 
-    res.send(response);
+    res.send(response);}
+    catch(error){
+        return res.status(500).send(error.message);
+    }
 }

@@ -7,6 +7,18 @@ function UserHistory() {
 
   const [history, setHistory] = useState([]);
 
+   const formatDate = (isoString) => {
+    const date = new Date(isoString);
+    return date.toLocaleString('en-US', {
+      month: 'long',    // full month name
+      day: 'numeric',   // day of month
+      year: 'numeric',  // full year
+      hour: 'numeric',  // hours
+      minute: '2-digit',// minutes, always 2‑digit
+      hour12: true      // AM/PM
+    });
+  };
+
   useEffect(() => {
     async function fetchData() {
       try {
@@ -41,7 +53,7 @@ function UserHistory() {
                 className="bg-white rounded-xl shadow-lg p-6 transform hover:-translate-y-1 hover:shadow-2xl transition duration-300"
               >
                 <h2 className="text-2xl font-semibold text-gray-800 mb-4 capitalize">
-                  History Details
+                  {formatDate(item.startTime)}
                 </h2>
                 <p className="mb-2 text-gray-700">
                   <span className="font-medium text-gray-800">User Name: </span>
@@ -50,6 +62,10 @@ function UserHistory() {
                 <p className="mb-2 text-gray-700">
                   <span className="font-medium text-gray-800">Rental Agent: </span>
                   <span className="capitalize">{`${item.rental.firstName} ${item.rental.lastName || ""}`}</span>
+                </p>
+                <p className="mb-2 text-gray-700">
+                  <span className="font-medium text-gray-800">Rental Phone Number: </span>
+                  <span className="capitalize">{item.rental.number}</span>
                 </p>
                 <p className="mb-2 text-gray-700">
                   <span className="font-medium text-gray-800">Destination: </span>

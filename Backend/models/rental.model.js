@@ -19,6 +19,12 @@ const rentalSchema = new Schema({
         lowercase: true,
         unique: true
     },
+
+    number:{
+        type: String,
+        required:true,
+        default:"123456789"
+    },
     password:{
         type: String,
         required: true,
@@ -34,6 +40,14 @@ const rentalSchema = new Schema({
     },
     
     vechile:{
+
+        name:{
+            type:String,
+            minlenght:[10, "color should be of lenght 3 please"],
+            default:"Maruti Suzuki Alto 800"
+
+        },
+
         color:{
             type: String,
             required: true,

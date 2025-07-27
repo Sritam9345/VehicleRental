@@ -37,7 +37,7 @@ const FinishRide = ({ ride, setFinishRidePanel }) => {
         <div className="flex items-center space-x-4">
           <img
             className="w-12 h-12 rounded-full object-cover"
-            src={ride?.user?.avatarUrl || 'https://via.placeholder.com/40'}
+            src={ride?.user?.avatarUrl || '/e6e4df26ba752161b9fc6a17321fa286.jpg'}
             alt={`${ride?.user?.firstName} avatar`}
           />
           <div>

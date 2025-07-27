@@ -1,8 +1,7 @@
-import React from 'react';
-import { useContext } from 'react';
+import React, { useContext } from 'react';
 import { CaptainDataContext } from '../context/CapatainContext';
 
-const VechileInfo = () => {
+const VehicleInfo = () => {
   const { captain } = useContext(CaptainDataContext);
 
   if (!captain) {
@@ -26,7 +25,7 @@ const VechileInfo = () => {
           <h2 className="text-2xl font-semibold text-blue-700 mb-2">
             Rental Information
           </h2>
-          <p className="text-xl text-blue-600">
+          <p className="text-xl text-blue-600 capitalize">
             {captain.firstName} {captain.lastName}
           </p>
         </div>
@@ -36,20 +35,34 @@ const VechileInfo = () => {
         </h2>
         <ul className="space-y-3">
           <li className="flex justify-between text-lg">
+            <span className="font-medium text-gray-700">Name:</span>
+            <span className="font-semibold text-gray-900 capitalize">
+              {captain.vechile.name}
+            </span>
+          </li>
+          <li className="flex justify-between text-lg">
             <span className="font-medium text-gray-700">Type:</span>
-            <span className="text-gray-900">{captain.vechile.type}</span>
+            <span className="font-semibold text-gray-900 capitalize">
+              {captain.vechile.type}
+            </span>
           </li>
           <li className="flex justify-between text-lg">
             <span className="font-medium text-gray-700">Plate Number:</span>
-            <span className="text-gray-900">{captain.vechile.plate}</span>
+            <span className="font-semibold text-gray-900 uppercase">
+              {captain.vechile.plate}
+            </span>
           </li>
           <li className="flex justify-between text-lg">
             <span className="font-medium text-gray-700">Color:</span>
-            <span className="text-gray-900">{captain.vechile.color}</span>
+            <span className="font-semibold text-gray-900 capitalize">
+              {captain.vechile.color}
+            </span>
           </li>
           <li className="flex justify-between text-lg">
             <span className="font-medium text-gray-700">Capacity:</span>
-            <span className="text-gray-900">{captain.vechile.capacity}</span>
+            <span className="font-semibold text-gray-900 capitalize">
+              {captain.vechile.capacity}
+            </span>
           </li>
         </ul>
       </div>
@@ -57,4 +70,4 @@ const VechileInfo = () => {
   );
 };
 
-export default VechileInfo;
+export default VehicleInfo;

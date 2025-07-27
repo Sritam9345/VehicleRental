@@ -21,6 +21,7 @@ const ConfirmRidePopUp = (props) => {
       setRide(response.data);
       
     } catch (error) {
+      alert("The OTP is invalid!, Try again");
       console.error(error)
     }
   }

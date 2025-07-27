@@ -30,6 +30,8 @@ const CaptainSignup = () => {
   const errorPopupPanelRef = useRef(null);
   const [errorPopupPanel,setErrorPopupPanel] = useState(false);
   const location = useRef(null);
+  const [rentalNumber,setRentalNumber] = useState('');
+  const [ vehicleName, setVehicleName ] = useState('')
 
    const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY //dev
 
@@ -39,7 +41,19 @@ const CaptainSignup = () => {
   const submitHandler = async (e) => {
     e.preventDefault()
 try{
-    const response1 = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${pickupLocation}&key=${apiKey}`);
+  
+  rentalNumber.split('').map(i=> {
+    let flg=0;
+    for(let k=0;k<10;k++){
+      if(k==i){ flg =1; break;}
+    }
+    if(flg==0) throw new Error('Enter Valid Number');
+  }
+
+)
+  
+  
+  const response1 = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${pickupLocation}&key=${apiKey}`);
     
     const {data} = response1;
     
@@ -56,12 +70,14 @@ try{
         firstName: firstName,
         lastName: lastName,
       email: email,
+      number:rentalNumber,
       password: password,
       vechile: {
         color: vehicleColor,
         plate: vehiclePlate,
         capacity: vehicleCapacity,
-        type: vehicleType
+        type: vehicleType,
+        name: vehicleName
       },
       location:{
         coordinates:[data.results[0].geometry.location.lat,data.results[0].geometry.location.lng]
@@ -160,10 +176,31 @@ console.log(error)
             type="password"
             placeholder='password'
           />
+           <h3 className='text-lg font-medium mb-2'>Enter Phone Number</h3>
+          <input
+            className='bg-[#eeeeee] mb-7 rounded-lg px-4 py-2 border w-full text-lg placeholder:text-base'
+            value={rentalNumber}
+            onChange={(e) => {
+              setRentalNumber(e.target.value)
+            }}
+            required
+            type="text"
+            placeholder='0123456789'
+          />
 
           <h3 className='text-lg font-medium mb-2'>Vehicle Information</h3>
           <div className='flex gap-4 mb-7'>
             <input
+              required
+              className='bg-[#eeeeee] w-1/2 rounded-lg px-4 py-2 border text-lg placeholder:text-base'
+              type="text"
+              placeholder='Vehicle Name'
+              value={vehicleName}
+              onChange={(e) => {
+                setVehicleName(e.target.value)
+              }}
+            />
+             <input
               required
               className='bg-[#eeeeee] w-1/2 rounded-lg px-4 py-2 border text-lg placeholder:text-base'
               type="text"
@@ -195,6 +232,7 @@ console.log(error)
                 setVehicleCapacity(e.target.value)
               }}
             />
+            
             <select
               required
               className='bg-[#eeeeee] w-1/2 rounded-lg px-4 py-2 border text-lg placeholder:text-base'
