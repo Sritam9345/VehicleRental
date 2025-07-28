@@ -38,7 +38,7 @@ const CaptainHome = () => {
   const navigate = useNavigate()
   const [ payment, setPayment ] = useLocalStorageState('payment', false)
   const [ active, setActive ] = useLocalStorageState('active', false)
-
+  const [distance,setDistance] = useLocalStorageState(0, false)
 
 console.log(captain.vechile.name);
 
@@ -50,7 +50,7 @@ useEffect(()=>{
    localStorage.setItem('active', JSON.stringify(active));
    localStorage.setItem('confirmRidePopupPanel', JSON.stringify(confirmRidePopupPanel));
    localStorage.setItem('ridePopupPanel', JSON.stringify(ridePopupPanel));
-},[ride,payment,active,confirmRidePopupPanel,ridePopupPanel])
+},[ride,payment,active,confirmRidePopupPanel,ridePopupPanel,distance])
 
     useEffect(() => {
         socket.emit('join', {
@@ -69,7 +69,8 @@ if(ride?.rental?.status=="inactive"){
 console.log(ride);
 
     socket.on('new-ride', (data) => {
-        setRide(data)
+        setRide(data.rideWithUser)
+        setDistance(data.distance)
         setRidePopupPanel(true)
         console.log(data);
     })
@@ -214,6 +215,7 @@ console.log(ride);
       <div ref={ridePopupPanelRef} style={{ transform: 'translateY(100%)', zIndex: 20 }} className="fixed inset-x-0 bottom-0 bg-white/95 backdrop-blur-lg rounded-t-3xl shadow-2xl border-t border-gray-200">
         <RidePopUp 
           ride={ride}
+          distance={distance}
           setRidePopupPanel={setRidePopupPanel} 
           setConfirmRidePopupPanel={setConfirmRidePopupPanel}
           confirmRide={confirmRide} />

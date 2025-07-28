@@ -9,16 +9,9 @@ const LiveTracking = (props) => {
    
   
 
-useEffect(() => {
-    setCurrentPosition({
-        lat: props.ride?.rental?.location.coordinates[1],
-        lng: props.ride?.rental?.location.coordinates[0]
-    });
-}, []);
-
 const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 console.log(apiKey);
-console.log(location);
+console.log(props.ride?.rental?.location.coordinates[0],props.ride?.rental?.location.coordinates[1]);
 
     return (
         <>
@@ -27,14 +20,14 @@ console.log(location);
                     <GoogleMap
                         mapContainerStyle={{width: '100%', height: '100%'}}
                         center={{
-        lat: props.ride?.rental?.location.coordinates[1],
-        lng: props.ride?.rental?.location.coordinates[0]
+        lat: props.ride?.rental?.location.coordinates[0],
+        lng: props.ride?.rental?.location.coordinates[1]
     }}
                         zoom={15}
                     >
                         <Marker position={{
-        lat: props.ride?.rental?.location.coordinates[1],
-        lng: props.ride?.rental?.location.coordinates[0]
+        lat: props.ride?.rental?.location.coordinates[0],
+        lng: props.ride?.rental?.location.coordinates[1]
     }} />
                     </GoogleMap>
                 </LoadScript>

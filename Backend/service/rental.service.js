@@ -67,7 +67,7 @@ module.exports.updateRental = async ({ rentalId, firstName, lastName, oldPasswor
                 password: newHashedPassword || rental.password,
                 location: {
                     type:"Point",
-                    coordinates:[newLocation.coordinates[1],newLocation.coordinates[0]]
+                    coordinates:[newLocation.coordinates[0],newLocation.coordinates[1]]
                 }
             },
             { new: true }

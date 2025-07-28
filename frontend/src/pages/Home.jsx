@@ -25,6 +25,8 @@ const Home = () => {
   const [vehicleType, setVehicleType] = useState(null)
   const [ride, setRide] = useState(null)
   const [searchRide, setSearchRide] = useState(true);
+  const [path,setPath] = useState('');
+  
 
   const panelRef = useRef(null)
   const panelCloseRef = useRef(null)
@@ -103,7 +105,7 @@ const Home = () => {
             })
         }
     }, [panelOpen])
-
+ 
     useGSAP(function () {
         if (vehiclePanel) {
             gsap.to(vehiclePanelRef.current, {
@@ -243,7 +245,9 @@ const Home = () => {
                  <VehiclePanel
                     selectVehicle={setVehicleType}
                     setConfirmRidePanel={setConfirmRidePanel} 
-                    setVehiclePanel={setVehiclePanel} />
+                    setVehiclePanel={setVehiclePanel}
+                    setPath={setPath}
+                    />
             </div>
             <div ref={confirmRidePanelRef} className='fixed w-full z-10 bottom-0 translate-y-full bg-white px-3 py-6 pt-12'>
                 <ConfirmRide
@@ -251,7 +255,9 @@ const Home = () => {
                     destination={destination}
                     vehicleType={vehicleType}
                     setConfirmRidePanel={setConfirmRidePanel} 
-                    setVehicleFound={setVehicleFound} />
+                    setVehicleFound={setVehicleFound}
+                    path={path}
+                    />
             </div>
             <div ref={vehicleFoundRef} className='fixed w-full z-10 bottom-0 translate-y-full bg-white px-3 py-6 pt-12'>
                 <LookingForDriver

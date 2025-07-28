@@ -1,7 +1,7 @@
 import React from 'react'
 
 const RidePopUp = (props) => {
-  const {  ride, setRidePopupPanel, setConfirmRidePopupPanel, confirmRide } = props
+  const {  ride, setRidePopupPanel, setConfirmRidePopupPanel, confirmRide,distance } = props
 console.log(props);
   return (
     <div className="p-6 space-y-6 bg-white rounded-2xl shadow-lg">
@@ -32,7 +32,7 @@ console.log(props);
           </div>
           <div>
             <h3 className="text-lg font-semibold text-gray-800">{ride?.destination}</h3>
-            <p className="text-sm text-gray-600">Distance: {ride?.distance} km</p>
+            <p className="text-sm text-gray-600">Distance: {distance} km</p>
           </div>
         </div>
       </div>

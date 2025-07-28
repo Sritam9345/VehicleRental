@@ -1,6 +1,7 @@
 const axios = require('axios');
 const { header } = require('express-validator');
 const rentalModel = require('../models/rental.model');
+const fs = require('fs/promises');
 
 module.exports.locateUser = async (address) => {
     const apiKey = process.env.GOOGLE_MAPS_API_KEY;
@@ -28,6 +29,8 @@ module.exports.locateUser = async (address) => {
 }
 
 module.exports.getDistance = async (origin, destination) => {
+
+    console.log(origin,destination);
     const apiKey = process.env.GOOGLE_MAPS_API_KEY;
     try {
         const response1 = await axios.get('https://maps.googleapis.com/maps/api/geocode/json', {
@@ -76,17 +79,16 @@ module.exports.getDistance = async (origin, destination) => {
                 }
             }
         );
-
-        console.log(response.data.routes[0].distanceMeters);
-
+console.log(response);
+     
         if (response.status === 200) {
             if(response.data === null){
                 throw new Error('No route found');
             }
-            const distance = response.data.routes[0];
-            return {
-                distance: distance
-            };
+            const distance = response.data.routes[0].distanceMeters;
+           
+            return  distance;
+            
         } else {
             throw new Error('Unable to fetch distance');
         }

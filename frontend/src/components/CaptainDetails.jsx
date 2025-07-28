@@ -11,8 +11,8 @@ const CaptainDetails = () => {
     const getAddress = async () => {
       try {
      
-        const lat = captain.location.coordinates[1];
-        const  lng = captain.location.coordinates[0];
+        const lat = captain.location.coordinates[0];
+        const  lng = captain.location.coordinates[1];
         console.log(lat,lng)
         const response = await axios.get(
           `https://maps.googleapis.com/maps/api/geocode/json`,

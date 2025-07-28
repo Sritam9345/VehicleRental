@@ -19,11 +19,11 @@ function initializeSocket(server) {
 
         socket.on("join", async (data) => {
             const { userId , userType } = data;
-
+console.log(socket.id);
             try {
-                if (userType === "user") {
+                if (userType == "user") {
                     await userModel.findByIdAndUpdate(userId, { socketID: socket.id }, { new: true });
-                } else if (userType === "rental") {
+                } else if (userType == "rental") {
                     await rentalModel.findByIdAndUpdate(userId, { socketID: socket.id }, { new: true });
                 }
             } catch (error) {
@@ -57,14 +57,11 @@ function initializeSocket(server) {
 }
 
 function sendMessageToSocketld(socketId, message) {
-    console.log(message.event);
-    if (io && io.sockets.sockets.get(socketId)) {
+        console.log(message.data);
         io.to(socketId).emit(message.event, message.data);
         console.log(`Message sent to ${socketId}`, message);
-    } else {
-        console.error(`Socket ${socketId} not found`);
-    }
-    console.log(`Sending message to ${socketId}: ${message}`);
+    
+    
 }
 
 module.exports = { initializeSocket, sendMessageToSocketld };
