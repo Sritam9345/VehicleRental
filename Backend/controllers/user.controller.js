@@ -14,8 +14,8 @@ module.exports.registerUser = async(req,res,next) =>{
        return res.status(400).json({error: error.array()})
     }
 try{
-    const {firstName,lastName, email, password} = req.body;
-
+    const {firstName,lastName, email, password,number} = req.body;
+console.log("This is number",number);
 const isUserAlreadyRegistered
  = await userModel.findOne({email:email});
 
@@ -31,7 +31,8 @@ if(isUserAlreadyRegistered){
         firstName: firstName,
         lastName: lastName,
         email:email,
-        password:hashedPassword
+        password:hashedPassword,
+        number:number
     });
  const token = user.generateAuthToken();
 

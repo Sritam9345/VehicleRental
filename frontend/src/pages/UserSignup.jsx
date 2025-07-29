@@ -12,7 +12,7 @@ const UserSignup = () => {
   const [ lastName, setLastName ] = useState('')
   const [ userData, setUserData ] = useState({})
   const [userNumber,setUserNumber] = useState('');
-
+  
   const navigate = useNavigate()
 
 
@@ -28,7 +28,9 @@ const UserSignup = () => {
         firstName: firstName,
         lastName: lastName,
       email: email,
-      password: password
+      password: password,
+      number:userNumber
+
     }
 
     const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/user/register`, newUser)
@@ -45,6 +47,7 @@ const UserSignup = () => {
     setFirstName('')
     setLastName('')
     setPassword('')
+
 
   }
   return (
@@ -103,6 +106,17 @@ const UserSignup = () => {
               }}
               required type="password"
               placeholder='password'
+            />
+            <h3 className='text-lg font-medium mb-2'>Enter PhoneNumber</h3>
+
+            <input
+              className='bg-[#eeeeee] mb-7 rounded-lg px-4 py-2 border w-full text-lg placeholder:text-base'
+              value={userNumber}
+              onChange={(e) => {
+                setUserNumber(e.target.value)
+              }}
+              required type="text"
+              placeholder='Must be 10 digit'
             />
 
             <button
