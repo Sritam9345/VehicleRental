@@ -3,7 +3,7 @@ import FinishRide from '../components/FinishRide'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 
-function CaptainRiding({ ride , setRide }) {
+function CaptainRiding({ ride , setRide ,distance}) {
   const [isOpen, setIsOpen] = useState(false)
   const panelRef = useRef(null)
 
@@ -51,7 +51,7 @@ function CaptainRiding({ ride , setRide }) {
         style={{ visibility: 'hidden' }}
         className="absolute inset-x-0 bottom-0 z-50  max-w-md mx-auto rounded-t-xl bg-white p-6 shadow-xl"
       >
-        <FinishRide ride={ride} setFinishRidePanel={setIsOpen} setRide={setRide} />
+        <FinishRide ride={ride} setFinishRidePanel={setIsOpen} setRide={setRide} distance={distance}/>
       </div>
     </div>
   )

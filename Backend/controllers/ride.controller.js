@@ -53,7 +53,9 @@ module.exports.createRide = async (req, res, next) => {
       });
     }
 
-    for (const rental of rentals) {
+  const  filteredRentals = rentals.filter(rentals=>rentals.vechile.type==rideWithUser.vechile);
+
+    for (const rental of filteredRentals) {
       console.log("This is rental socketID", rental);
 
       const LATI = rental.location.coordinates[0];

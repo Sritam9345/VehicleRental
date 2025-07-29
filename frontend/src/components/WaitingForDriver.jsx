@@ -8,7 +8,7 @@ const WaitingForDriver = (props) => {
       }}><i className="text-3xl text-gray-200 ri-arrow-down-wide-line"></i></h5>
 
       <div className='flex items-center justify-between'>
-        <img className='h-12' src="https://swyft.pl/wp-content/uploads/2023/05/how-many-people-can-a-uberx-take.jpg" alt="" />
+        <img className='h-12' src={props.path} alt="" />
         <div className='text-right'>
           <h2 className='text-lg font-medium capitalize'>{props.ride?.rental.firstName} {props.ride?.rental.lastName}</h2>
           <h2 className='text-lg font-medium capitalize'>{props.ride?.rental.number}</h2>

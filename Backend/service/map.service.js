@@ -138,7 +138,8 @@ try{
             $geoWithin: {
                 $centerSphere: [[lng, lat], radius /6378.1] 
             }
-        }
+        },
+        status:"active"
     });
 console.log("Total rentals",rentals);
     return {

@@ -194,7 +194,7 @@ console.log(error)
               required
               className='bg-[#eeeeee] w-1/2 rounded-lg px-4 py-2 border text-lg placeholder:text-base'
               type="text"
-              placeholder='Vehicle Name'
+              placeholder='Name'
               value={vehicleName}
               onChange={(e) => {
                 setVehicleName(e.target.value)
@@ -204,7 +204,7 @@ console.log(error)
               required
               className='bg-[#eeeeee] w-1/2 rounded-lg px-4 py-2 border text-lg placeholder:text-base'
               type="text"
-              placeholder='Vehicle Color'
+              placeholder='Color'
               value={vehicleColor}
               onChange={(e) => {
                 setVehicleColor(e.target.value)
@@ -214,7 +214,7 @@ console.log(error)
               required
               className='bg-[#eeeeee] w-1/2 rounded-lg px-4 py-2 border text-lg placeholder:text-base'
               type="text"
-              placeholder='Vehicle Plate'
+              placeholder='Plate'
               value={vehiclePlate}
               onChange={(e) => {
                 setVehiclePlate(e.target.value)
@@ -226,7 +226,7 @@ console.log(error)
               required
               className='bg-[#eeeeee] w-1/2 rounded-lg px-4 py-2 border text-lg placeholder:text-base'
               type="number"
-              placeholder='Vehicle Capacity'
+              placeholder='Capacity'
               value={vehicleCapacity}
               onChange={(e) => {
                 setVehicleCapacity(e.target.value)

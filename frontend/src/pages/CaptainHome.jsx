@@ -206,7 +206,7 @@ console.log(ride);
         </div>
         {/* New ride info displayed when ride is started */}
         {active  && (
-        <CaptainRiding ride={ride} setRide={setRide}/>
+        <CaptainRiding ride={ride} setRide={setRide} distance={distance}/>
         )}
       </main>
 

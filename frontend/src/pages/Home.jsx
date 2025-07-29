@@ -264,14 +264,18 @@ const Home = () => {
                     createRide={createRide}
                     destination={destination}
                     vehicleType={vehicleType}
-                    setVehicleFound={setVehicleFound} />
+                    setVehicleFound={setVehicleFound}
+                    path={path}
+                    />
             </div>
             <div ref={waitingForDriverRef} className='fixed w-full  z-10 bottom-0 bg-white px-3 py-6 pt-12'>
                 <WaitingForDriver
                     ride={ride}
                     setVehicleFound={setVehicleFound}
                     setWaitingForDriver={setWaitingForDriver}
-                    waitingForDriver={waitingForDriver} />
+                    waitingForDriver={waitingForDriver} 
+                    path={path}
+                    />
             </div>
         </div>
   )

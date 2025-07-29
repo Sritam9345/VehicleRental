@@ -47,7 +47,7 @@ const FinishRide = ({ ride, setFinishRidePanel }) => {
         </div>
         <div className="text-right">
           <p className="text-sm text-gray-500 uppercase tracking-wide">Distance</p>
-          <p className="text-lg font-semibold text-gray-800">{`25`} km</p>
+          <p className="text-lg font-semibold text-gray-800">{distance} km</p>
         </div>
       </div>
 
