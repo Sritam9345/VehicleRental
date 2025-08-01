@@ -12,6 +12,9 @@ import WaitingForDriver from '../components/WaitingForDriver'
 import LiveTracking from '../components/LiveTracking'
 import { SocketContext } from '../context/SocketContext'
 import { UserDataContext } from '../context/UserContext'
+import ChatSidebar from '../components/Chat'
+import Draggable from 'react-draggable';
+
 
 const Home = () => {
   const [destination, setDestination] = useState('')
@@ -26,7 +29,8 @@ const Home = () => {
   const [ride, setRide] = useState(null)
   const [searchRide, setSearchRide] = useState(true);
   const [path,setPath] = useState('');
-  
+  const [chat,setChat] = useState(true);
+  const [chatLog,setChatLog] = useState([]);
 
   const panelRef = useRef(null)
   const panelCloseRef = useRef(null)
@@ -38,7 +42,7 @@ const Home = () => {
   const navigate = useNavigate()
   const { socket } = useContext(SocketContext)
   const { user } = useContext(UserDataContext)
-
+console.log(chat)
   useEffect(() => {
     socket.emit('join', { userType: 'user', userId: user._id })
     
@@ -64,7 +68,15 @@ const Home = () => {
     setRide(data)
     setVehicleFound(false)
     setWaitingForDriver(true)
+    
   })
+
+useEffect(()=>{
+socket.on('chat',(data)=>{
+  setChatLog(prev=>[...prev, { text: data,type:"rental"}]);
+})
+
+},[]);
 
   socket.on('ride-started', () => {
     setSearchRide(false);
@@ -179,7 +191,11 @@ const Home = () => {
 
   return (
     <div className="h-screen relative overflow-hidden">
+     
+{!chat && <aside className="fixed right-0 top-0 h-full w-80 bg-white shadow-lg z-30 flex flex-col animate-ping-once"><ChatSidebar setChat={setChat} chatLog={chatLog} setChatLog={setChatLog} ride={ride} type={"user"}/></aside>}
 
+      
+    
       {/* Header */}
       {!panelOpen && (
         <header className="absolute top-0 inset-x-0 z-20 flex items-center justify-between px-6 py-4 bg-white bg-opacity-80 backdrop-blur-md">
@@ -194,17 +210,27 @@ const Home = () => {
           >
             <i className="ri-menu-line mr-2"></i>Profile
           </Link>
+           
         </header>
       )}
-
+ {chat && <button
+      onClick={()=>setChat(false)}
+      className="fixed right-6 top-60
+       transform -translate-y-1/2 z-40 w-14 h-14 bg-yellow-400 text-blue-900 rounded-full shadow-lg flex items-center justify-center hover:bg-yellow-500 transition"
+      aria-label="Toggle Chat Sidebar"
+    >
+      <i className="ri-chat-3-line text-2xl"></i>
+    </button>}
       {/* Main Content */}
       <div className="h-screen w-screen">
         <LiveTracking ride={ride} />
       </div>
 
+ 
+
       {/* Bottom Panel */}
       <div className="flex flex-col justify-end h-screen absolute top-0 w-full">
-       { searchRide &&  <div className="h-[30%] p-6 bg-white relative">
+       { searchRide &&  <div className="h-[25%] p-6 bg-white relative">
           <h5
             ref={panelCloseRef}
             onClick={() => setPanelOpen(false)}
@@ -229,6 +255,7 @@ const Home = () => {
           >
             Find Trip
           </button>
+          
         </div>}
         <div ref={panelRef} className="bg-white h-0">
           <LocationSearchPanel

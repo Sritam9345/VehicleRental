@@ -11,6 +11,7 @@ import { SocketContext } from '../context/SocketContext'
 import { CaptainDataContext } from '../context/CapatainContext'
 import axios from 'axios'
 import CaptainRiding from '../components/CaptainRiding'
+import ChatSidebar from '../components/Chat'
 
 
 // Add custom persistent state hook:
@@ -39,6 +40,8 @@ const CaptainHome = () => {
   const [ payment, setPayment ] = useLocalStorageState('payment', false)
   const [ active, setActive ] = useLocalStorageState('active', false)
   const [distance,setDistance] = useLocalStorageState(0, false)
+  const [chatLog,setChatLog] = useState([]);
+  const [chat,setChat] = useState(true);
 
 console.log(captain.vechile.name);
 
@@ -74,6 +77,14 @@ console.log(ride);
         setRidePopupPanel(true)
         console.log(data);
     })
+
+   
+   useEffect(()=>{
+   socket.on('chat',(data)=>{
+     setChatLog(prev=>[...prev, { text: data,type:"rental"}]);
+   })
+   
+   },[]);
 
     socket.on('ride-ended',(ride)=>{
         setRide(ride);
@@ -164,6 +175,9 @@ console.log(ride);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50">
+
+{!chat && <aside className="fixed right-0 top-0 h-full w-80 bg-white shadow-lg z-30 flex flex-col animate-ping-once"><ChatSidebar setChat={setChat} chatLog={chatLog} setChatLog={setChatLog} ride={ride} type={"captain"}/></aside>}
+
       {/* Header */}
       <header className="bg-white/90 backdrop-blur-sm shadow-lg border-b border-gray-200">
         <div className="container mx-auto px-6 py-4 flex items-center justify-between">
@@ -191,7 +205,14 @@ console.log(ride);
 
       <main className="container mx-auto px-6 py-8">
         <CaptainDetails />
-        
+        {chat && <button
+      onClick={()=>setChat(false)}
+      className="fixed right-6 top-60
+       transform -translate-y-1/2 z-40 w-14 h-14 bg-yellow-400 text-blue-900 rounded-full shadow-lg flex items-center justify-center hover:bg-yellow-500 transition"
+      aria-label="Toggle Chat Sidebar"
+    >
+      <i className="ri-chat-3-line text-2xl"></i>
+    </button>}
         {/* Status Card */}
         <div className="mt-8 bg-white rounded-xl shadow-lg p-6 transition-all duration-300 hover:shadow-xl">
           <div className="flex items-center justify-between">

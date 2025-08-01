@@ -45,7 +45,10 @@ console.log(socket.id);
 
         });
 
-
+        socket.on('chat',(message)=>{
+            socket.to(message.socketId).emit('chat',message.text);
+            console.log(message);
+        });
 
         socket.on('disconnect', () => {
             console.log(`Socket disconnected: ${socket.id}`);
